@@ -1,0 +1,54 @@
+{
+  "vault_path": "obsidian_vault",
+  "check_interval": {
+    "gmail": 120,
+    "whatsapp": 30,
+    "filesystem": 10,
+    "orchestrator": 60
+  },
+  "watchdog": {
+    "check_interval": 60,
+    "auto_restart": true
+  },
+  "gmail": {
+    "credentials_path": "gmail_credentials.json",
+    "monitor_filters": ["is:unread is:important"]
+  },
+  "whatsapp": {
+    "session_path": "~/.whatsapp_session",
+    "keywords": ["urgent", "asap", "invoice", "payment", "help", "emergency", "critical", "important"]
+  },
+  "security": {
+    "require_approval_for": [
+      "payments",
+      "emails_to_new_contacts",
+      "file_sharing",
+      "access_changes",
+      "confidential_info"
+    ],
+    "approval_threshold": 100
+  },
+  "logging": {
+    "level": "INFO",
+    "file_logging": true,
+    "log_retention_days": 30
+  },
+  "mcp_servers": {
+    "email_mcp": {
+      "enabled": true,
+      "port": 8080,
+      "host": "localhost"
+    },
+    "browser_mcp": {
+      "enabled": true,
+      "port": 8081,
+      "host": "localhost"
+    }
+  },
+  "obsidian_integration": {
+    "enable_realtime_sync": true,
+    "dashboard_refresh_interval": 30,
+    "use_obsidian_links": true,
+    "enable_dataview_queries": true
+  }
+}

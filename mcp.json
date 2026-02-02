@@ -1,0 +1,24 @@
+{
+  "servers": [
+    {
+      "name": "email-mcp",
+      "command": "node",
+      "args": ["src/mcp-servers/email-mcp-server/index.js"],
+      "env": {
+        "GMAIL_CREDENTIALS_PATH": "gmail_credentials.json"
+      },
+      "port": 8080,
+      "host": "localhost"
+    },
+    {
+      "name": "browser-mcp",
+      "command": "npx",
+      "args": ["@anthropic/browser-mcp"],
+      "env": {
+        "HEADLESS": "true"
+      },
+      "port": 8081,
+      "host": "localhost"
+    }
+  ]
+}

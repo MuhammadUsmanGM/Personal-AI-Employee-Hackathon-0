@@ -1,0 +1,12 @@
+{
+  "showFrontmatter": true,
+  "showInlineTitle": true,
+  "autoConvertHtml": true,
+  "strictMarkdown": false,
+  "propertiesInDocument": "disabled",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "Inbox",
+  "attachmentFolderPath": "Attachments",
+  "promptDelete": false,
+  "trashOption": "local"
+}
