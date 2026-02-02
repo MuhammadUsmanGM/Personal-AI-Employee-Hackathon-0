@@ -90,3 +90,30 @@ As a user, I want real-time visibility into system status and task completion, s
 - **SC-004**: Dashboard updates occur within 5 minutes of new events
 - **SC-005**: At least 80% of routine tasks are processed without human intervention
 - **SC-006**: Complete audit trail is available for all AI decisions and actions
+
+## Non-Functional Requirements
+
+### Security & Privacy
+- **NFR-001**: System MUST implement OAuth 2.0 for secure authentication with external services (Gmail, etc.)
+- **NFR-002**: System MUST encrypt all sensitive data at rest and in transit
+- **NFR-003**: System MUST ensure 100% of sensitive actions require human approval before execution
+
+### Performance & Scalability
+- **NFR-004**: System MUST process tasks using priority-based queuing to ensure critical tasks are handled first
+- **NFR-005**: System MUST maintain response times under 30 seconds for routine operations
+- **NFR-006**: System MUST handle up to 100 concurrent tasks without degradation in performance
+
+### Reliability & Observability
+- **NFR-007**: System MUST log all activities to /Logs/ folder with timestamped entries for audit trail
+- **NFR-008**: System MUST implement retry logic with exponential backoff for failed operations
+- **NFR-009**: System MUST maintain 99%+ uptime for all core services
+
+## Clarifications
+
+### Session 2026-02-02
+
+- Q: What security measures should be implemented for protecting sensitive data and communications? → A: Implement robust security with OAuth 2.0 and encryption
+- Q: How should the system prioritize task processing? → A: Priority-based queuing
+- Q: Who should handle file operations in the system? → A: Claude Code handles all file operations using built-in filesystem MCP
+- Q: What approach should be taken for logging system activities? → A: Log everything to files in /Logs/ with timestamped entries
+- Q: What should serve as the primary source for business rules and logic? → A: Use company handbook as rule source with structured markdown format
