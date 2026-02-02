@@ -1,31 +1,30 @@
-<!-- SYNC IMPACT REPORT
-Version change: N/A (new file) → 1.0.0
-Added sections: All sections (new constitution file)
-Removed sections: N/A
-Templates requiring updates: ⚠ pending review - .specify/templates/plan-template.md, .specify/templates/spec-template.md, .specify/templates/tasks-template.md
-Follow-up TODOs: None
--->
+---
+id: 1
+title: Create Personal AI Employee Constitution
+stage: constitution
+date_iso: 2026-02-02
+surface: agent
+model: claude-sonnet-4-5-20250929
+feature: none
+branch: master
+user: Usman Mustafa
+command: sp.constitution
+labels: ["constitution", "personal-ai-employee", "governance"]
+links:
+  spec: null
+  ticket: null
+  adr: null
+  pr: null
+files_yaml:
+  - ".specify/memory/constitution.md"
+tests_yaml: []
+---
+
+# Create Personal AI Employee Constitution
+
+## Prompt Text
+
 # Personal AI Employee Constitution
-
-## Core Architecture Principles
-
-### Local-First Architecture
-**Local-First**: All sensitive data stays on local machine. The Obsidian vault serves as the single source of truth for all personal and business information. No cloud storage for sensitive data is permitted.
-
-### Privacy-Centric Design
-**Privacy-Centric**: The Obsidian vault is the central hub for all data. All processing happens locally, with external systems accessed only through secure, minimal interfaces. Data never leaves the local machine unless explicitly required by the user.
-
-### Human-in-the-Loop Approval
-**Human-in-the-Loop**: All sensitive actions require approval via file-based workflow. The AI cannot execute payments, send emails to new contacts, or make irreversible changes without human approval through the file-based approval system.
-
-### Agent Skills Mandatory
-**Agent Skills Only**: All AI functionality MUST be implemented as Claude Agent Skills. This ensures modularity, testability, and clear interfaces between different AI capabilities.
-
-### Autonomous Operation
-**Autonomous Operation**: The system runs 24/7 without human intervention (except for required approvals). Watcher agents continuously monitor for new tasks and trigger processing automatically.
-
-### Event-Driven Architecture
-**Watcher-Driven**: The AI wakes up via event triggers from watcher agents, not user prompts. This ensures the system responds proactively to new inputs rather than waiting for manual activation.
 
 ## Technology Constraints
 - Primary Brain: Claude Code (Pro subscription or Gemini API with Claude Code Router)
@@ -36,6 +35,14 @@ Follow-up TODOs: None
 - Process Manager: PM2 for daemon process management
 - NO cloud storage for sensitive data
 - NO paid external APIs (except Claude/Gemini)
+
+## Core Architecture Principles
+- **Local-First**: All sensitive data stays on local machine
+- **Privacy-Centric**: Obsidian vault = single source of truth
+- **Human-in-the-Loop**: All sensitive actions require approval via file-based workflow
+- **Agent Skills Only**: All AI functionality MUST be implemented as Claude Agent Skills
+- **Autonomous Operation**: System runs 24/7 without human intervention (except approvals)
+- **Watcher-Driven**: AI wakes up via event triggers, not user prompts
 
 ## Hard Requirements
 - Minimum 8GB RAM, 4-core CPU, 20GB disk space
@@ -83,7 +90,10 @@ Follow-up TODOs: None
 ├── Dashboard.md (daily briefing)
 └── Company_Handbook.md (business context for AI)
 
-## Governance
-All development and operation of the Personal AI Employee must comply with these constitutional principles. Any deviation requires explicit amendment to this document. The system must be reviewed for compliance with these principles during regular audits.
+## Response Text
 
-**Version**: 1.0.0 | **Ratified**: 2026-02-02 | **Last Amended**: 2026-02-02
+Created the Personal AI Employee Constitution file at `.specify/memory/constitution.md` with all the specified principles, constraints, and requirements. The constitution establishes the fundamental governance for the AI Employee system, including technology constraints, architecture principles, quality standards, security requirements, and the required folder structure. The file includes a sync impact report and follows the required governance structure with version tracking.
+
+## Outcome
+
+Successfully created the constitution file with all specified requirements and principles for the Personal AI Employee Hackathon project.
