@@ -24,10 +24,10 @@ sys.path.insert(0, str(project_root))
 
 from src.agents.orchestrator import Orchestrator
 
-# Create default vault structure if it doesn't exist
-vault_path = "vault"
+# Use existing obsidian vault structure
+vault_path = "obsidian_vault"
 vault_dirs = ["Inbox", "Needs_Action", "Plans", "Pending_Approval",
-              "Approved", "Rejected", "Done", "Logs", "obsidian_vault"]
+              "Approved", "Rejected", "Done", "Logs", "Enterprise", "Analytics"]
 
 vault_root = Path(vault_path)
 for dir_name in vault_dirs:
@@ -54,7 +54,7 @@ Our mission is to deliver exceptional value to our customers through innovative 
 '''
     handbook_path.write_text(handbook_content)
 
-# Start the orchestrator
+# Start the orchestrator with existing vault
 orchestrator = Orchestrator(vault_path=vault_path)
 orchestrator.run()
             """
@@ -77,15 +77,16 @@ def main():
     """Main function to start both services"""
     print("Starting Silver Tier Personal AI Employee System...")
 
-    # Create vault directories if they don't exist
-    vault_path = Path("vault")
+    # Use existing obsidian vault structure
+    vault_path = Path("obsidian_vault")
     vault_dirs = ["Inbox", "Needs_Action", "Plans", "Pending_Approval",
-                  "Approved", "Rejected", "Done", "Logs", "obsidian_vault"]
+                  "Approved", "Rejected", "Done", "Logs", "Enterprise", "Analytics"]
 
+    # Create only enterprise-specific directories, don't interfere with existing structure
     for dir_name in vault_dirs:
         (vault_path / dir_name).mkdir(parents=True, exist_ok=True)
 
-    print("Vault directories created.")
+    print("Using existing obsidian vault structure with enterprise extensions.")
 
     # Start orchestrator in a separate thread
     orchestrator_thread = threading.Thread(target=run_orchestrator, daemon=True)

@@ -19,7 +19,7 @@ from src.services.calendar_service import CalendarService
 from src.services.predictive_analytics_service import PredictiveAnalyticsService
 from src.services.adaptive_learning_service import AdaptiveLearningService
 from src.services.database import init_db, SessionLocal
-from src.config.manager import get_config
+from src.config.manager import ConfigManager
 
 class TaskTriggerHandler(FileSystemEventHandler):
     """
@@ -32,12 +32,14 @@ class TaskTriggerHandler(FileSystemEventHandler):
         self.logger = setup_logger("orchestrator.filesystem")
 
         # Initialize Silver Tier services
-        self.config = get_config()
+        from src.config.manager import ConfigManager
+        config_manager = ConfigManager()
+        self.config = config_manager.config
         self.calendar_service = None
         self.analytics_service = None
         self.learning_service = None
 
-        if self.config["silver_tier_features"]["enable_learning"]:
+        if self.config.get("silver_tier_features", {}).get("enable_learning", False):
             self._initialize_silver_services()
 
     def _initialize_silver_services(self):
@@ -79,7 +81,7 @@ class Orchestrator:
     """
     Coordinates all agents and manages the overall workflow
     """
-    def __init__(self, vault_path="vault"):
+    def __init__(self, vault_path="obsidian_vault"):
         self.vault_path = Path(vault_path)
         self.needs_action_path = self.vault_path / 'Needs_Action'
         self.inbox_path = self.vault_path / 'Inbox'
@@ -88,7 +90,9 @@ class Orchestrator:
         self.logger = setup_logger("orchestrator.main")
 
         # Initialize Silver Tier configuration
-        self.config = get_config()
+        from src.config.manager import ConfigManager
+        config_manager = ConfigManager()
+        self.config = config_manager.config
 
         # Initialize Silver Tier services if enabled
         self.calendar_service = None
@@ -100,7 +104,7 @@ class Orchestrator:
         self.needs_action_path.mkdir(parents=True, exist_ok=True)
         self.inbox_path.mkdir(parents=True, exist_ok=True)
 
-        if self.config["silver_tier_features"]["enable_learning"]:
+        if self.config.get("silver_tier_features", {}).get("enable_learning", False):
             self._initialize_silver_services()
 
     def _initialize_silver_services(self):

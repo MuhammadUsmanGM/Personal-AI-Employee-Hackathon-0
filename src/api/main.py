@@ -68,10 +68,14 @@ async def health_check():
 from .routes.dashboard import dashboard_router
 from .routes.tasks import task_router
 from .routes.approval import approval_router
+from .routes.ai import ai_router
+from .routes.enterprise import enterprise_router
 
 app.include_router(dashboard_router, prefix="/api", tags=["dashboard"])
 app.include_router(task_router, prefix="/api", tags=["tasks"])
 app.include_router(approval_router, prefix="/api", tags=["approvals"])
+app.include_router(ai_router, prefix="/api", tags=["ai"])
+app.include_router(enterprise_router, prefix="/api", tags=["enterprise"])
 
 # Root endpoint
 @app.get("/")

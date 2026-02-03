@@ -247,3 +247,49 @@ class BulkUpdateResponse(BaseModel):
     updated_count: int
     failed_count: int
     errors: List[Dict[str, str]]
+
+
+# Import Gold Tier models
+from .gold_tier_models import (
+    # Strategic Objective Models
+    StrategicObjectiveStatus,
+    StrategicObjectivePriority,
+    StrategicObjectiveRequest,
+    StrategicObjectiveResponse,
+
+    # Risk Models
+    RiskLevel,
+    RiskCategory,
+    RiskAssessmentRequest,
+    RiskAssessmentResponse,
+
+    # Compliance Models
+    ComplianceStatus,
+    ComplianceRecordRequest,
+    ComplianceRecordResponse,
+
+    # Resource Allocation Models
+    ResourceAllocationStatus,
+    ResourceAllocationRequest,
+    ResourceAllocationResponse,
+
+    # Decision Support Models
+    DecisionSupportRequest,
+    DecisionSupportResponse,
+
+    # Business Intelligence Models
+    BusinessIntelligenceReportRequest,
+    BusinessIntelligenceReportResponse,
+
+    # Dashboard Models
+    PersonalizedDashboardRequest,
+    PersonalizedDashboardResponse,
+
+    # AI Interaction Models
+    AIInteractionRequest,
+    AIInteractionResponse,
+
+    # Analytics Models
+    EnterpriseAnalyticsRequest,
+    EnterpriseAnalyticsResponse
+)
