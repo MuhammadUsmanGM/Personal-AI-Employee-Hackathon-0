@@ -36,6 +36,7 @@ class ConfigManager:
                 "gmail": int(os.getenv("GMAIL_CHECK_INTERVAL", "120")),  # seconds
                 "whatsapp": int(os.getenv("WHATSAPP_CHECK_INTERVAL", "30")),  # seconds
                 "filesystem": int(os.getenv("FILESYSTEM_CHECK_INTERVAL", "10")),  # seconds
+                "calendar": int(os.getenv("CALENDAR_CHECK_INTERVAL", "300")),  # seconds
                 "orchestrator": int(os.getenv("ORCHESTRATOR_CHECK_INTERVAL", "60"))  # seconds
             },
             "watchdog": {
@@ -50,6 +51,32 @@ class ConfigManager:
                 "session_path": os.getenv("WHATSAPP_SESSION_PATH", "~/.whatsapp_session"),
                 "keywords": ["urgent", "asap", "invoice", "payment", "help", "emergency", "critical", "important"]
             },
+            "calendar": {
+                "sync_enabled": os.getenv("CALENDAR_SYNC_ENABLED", "false").lower() == "true",
+                "providers": ["google", "outlook"],  # Supported providers
+                "default_provider": os.getenv("CALENDAR_DEFAULT_PROVIDER", "google"),
+                "sync_frequency_minutes": int(os.getenv("CALENDAR_SYNC_FREQUENCY", "15")),
+                "create_tasks_for_events": os.getenv("CALENDAR_CREATE_TASKS_FOR_EVENTS", "true").lower() == "true"
+            },
+            "silver_tier_features": {
+                "enable_analytics": os.getenv("ENABLE_ANALYTICS", "true").lower() == "true",
+                "enable_learning": os.getenv("ENABLE_LEARNING", "true").lower() == "true",
+                "enable_advanced_monitoring": os.getenv("ENABLE_ADVANCED_MONITORING", "true").lower() == "true",
+                "enable_predictive_features": os.getenv("ENABLE_PREDICTIVE_FEATURES", "true").lower() == "true",
+                "enable_calendar_integration": os.getenv("ENABLE_CALENDAR_INTEGRATION", "false").lower() == "true"
+            },
+            "api": {
+                "host": os.getenv("API_HOST", "localhost"),
+                "port": int(os.getenv("API_PORT", "8000")),
+                "workers": int(os.getenv("API_WORKERS", "4")),
+                "cors_origins": os.getenv("CORS_ORIGINS", "*").split(",")
+            },
+            "database": {
+                "url": os.getenv("DATABASE_URL", "sqlite:///silver_tier.db"),
+                "pool_size": int(os.getenv("DB_POOL_SIZE", "20")),
+                "pool_overflow": int(os.getenv("DB_POOL_OVERFLOW", "10")),
+                "echo": os.getenv("DB_ECHO", "false").lower() == "true"
+            },
             "security": {
                 "require_approval_for": [
                     "payments",
@@ -63,7 +90,8 @@ class ConfigManager:
             "logging": {
                 "level": os.getenv("LOG_LEVEL", "INFO"),
                 "file_logging": os.getenv("LOG_FILE_LOGGING", "true").lower() == "true",
-                "log_retention_days": int(os.getenv("LOG_RETENTION_DAYS", "30"))
+                "log_retention_days": int(os.getenv("LOG_RETENTION_DAYS", "30")),
+                "structured_logging": os.getenv("STRUCTURED_LOGGING", "true").lower() == "true"
             },
             "mcp_servers": {
                 "email_mcp": {
@@ -76,6 +104,11 @@ class ConfigManager:
                     "port": int(os.getenv("BROWSER_MCP_PORT", "8081")),
                     "host": os.getenv("BROWSER_MCP_HOST", "localhost")
                 }
+            },
+            "integrations": {
+                "calendar_enabled": os.getenv("CALENDAR_INTEGRATION_ENABLED", "false").lower() == "true",
+                "crm_enabled": os.getenv("CRM_ENABLED", "false").lower() == "true",
+                "project_management_enabled": os.getenv("PROJECT_MANAGEMENT_ENABLED", "false").lower() == "true"
             }
         }
 

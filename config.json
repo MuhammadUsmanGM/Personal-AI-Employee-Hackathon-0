@@ -4,6 +4,7 @@
     "gmail": 120,
     "whatsapp": 30,
     "filesystem": 10,
+    "calendar": 300,
     "orchestrator": 60
   },
   "watchdog": {
@@ -18,6 +19,32 @@
     "session_path": "~/.whatsapp_session",
     "keywords": ["urgent", "asap", "invoice", "payment", "help", "emergency", "critical", "important"]
   },
+  "calendar": {
+    "sync_enabled": false,
+    "providers": ["google", "outlook"],
+    "default_provider": "google",
+    "sync_frequency_minutes": 15,
+    "create_tasks_for_events": true
+  },
+  "silver_tier_features": {
+    "enable_analytics": true,
+    "enable_learning": true,
+    "enable_advanced_monitoring": true,
+    "enable_predictive_features": true,
+    "enable_calendar_integration": false
+  },
+  "api": {
+    "host": "localhost",
+    "port": 8000,
+    "workers": 4,
+    "cors_origins": ["*"]
+  },
+  "database": {
+    "url": "sqlite:///silver_tier.db",
+    "pool_size": 20,
+    "pool_overflow": 10,
+    "echo": false
+  },
   "security": {
     "require_approval_for": [
       "payments",
@@ -31,7 +58,8 @@
   "logging": {
     "level": "INFO",
     "file_logging": true,
-    "log_retention_days": 30
+    "log_retention_days": 30,
+    "structured_logging": true
   },
   "mcp_servers": {
     "email_mcp": {
@@ -50,5 +78,10 @@
     "dashboard_refresh_interval": 30,
     "use_obsidian_links": true,
     "enable_dataview_queries": true
+  },
+  "integrations": {
+    "calendar_enabled": false,
+    "crm_enabled": false,
+    "project_management_enabled": false
   }
 }

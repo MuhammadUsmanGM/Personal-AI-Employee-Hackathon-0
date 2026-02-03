@@ -6,6 +6,8 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import sys
 import os
+from datetime import datetime
+from typing import Optional
 
 # Add the project root to the Python path so imports work correctly
 project_root = Path(__file__).parent.parent.parent
@@ -13,15 +15,57 @@ sys.path.insert(0, str(project_root))
 
 from src.claude_skills.ai_employee_skills.processor import TaskProcessor
 from src.utils.logger import setup_logger, log_activity
+from src.services.calendar_service import CalendarService
+from src.services.predictive_analytics_service import PredictiveAnalyticsService
+from src.services.adaptive_learning_service import AdaptiveLearningService
+from src.services.database import init_db, SessionLocal
+from src.config.manager import get_config
 
 class TaskTriggerHandler(FileSystemEventHandler):
     """
     Handles file system events to trigger Claude Code when new tasks arrive
     """
     def __init__(self, processor, callback):
+        super().__init__()
         self.processor = processor
         self.callback = callback
         self.logger = setup_logger("orchestrator.filesystem")
+
+        # Initialize Silver Tier services
+        self.config = get_config()
+        self.calendar_service = None
+        self.analytics_service = None
+        self.learning_service = None
+
+        if self.config["silver_tier_features"]["enable_learning"]:
+            self._initialize_silver_services()
+
+    def _initialize_silver_services(self):
+        """Initialize Silver Tier services"""
+        try:
+            # Initialize database
+            init_db(self.config["database"]["url"])
+
+            # Create session for services
+            db_session = SessionLocal()
+
+            if self.config["silver_tier_features"]["enable_learning"]:
+                self.learning_service = AdaptiveLearningService(db_session)
+
+            if self.config["silver_tier_features"]["enable_analytics"]:
+                self.analytics_service = PredictiveAnalyticsService(db_session)
+
+            if self.config["integrations"]["calendar_enabled"]:
+                self.calendar_service = CalendarService(db_session)
+
+            log_activity("SILVER_SERVICES_INITIALIZED",
+                        "Silver Tier services initialized successfully",
+                        self.config["vault_path"])
+
+        except Exception as e:
+            log_activity("SILVER_SERVICES_INIT_ERROR",
+                        f"Error initializing Silver Tier services: {str(e)}",
+                        self.config["vault_path"])
 
     def on_created(self, event):
         if event.is_directory or not event.src_path.endswith('.md'):
@@ -43,9 +87,50 @@ class Orchestrator:
         self.running_watchers = []
         self.logger = setup_logger("orchestrator.main")
 
+        # Initialize Silver Tier configuration
+        self.config = get_config()
+
+        # Initialize Silver Tier services if enabled
+        self.calendar_service = None
+        self.analytics_service = None
+        self.learning_service = None
+        self.silver_services_initialized = False
+
         # Create necessary directories if they don't exist
         self.needs_action_path.mkdir(parents=True, exist_ok=True)
         self.inbox_path.mkdir(parents=True, exist_ok=True)
+
+        if self.config["silver_tier_features"]["enable_learning"]:
+            self._initialize_silver_services()
+
+    def _initialize_silver_services(self):
+        """Initialize Silver Tier services"""
+        try:
+            # Initialize database
+            init_db(self.config["database"]["url"])
+
+            # Create session for services
+            db_session = SessionLocal()
+
+            if self.config["silver_tier_features"]["enable_learning"]:
+                self.learning_service = AdaptiveLearningService(db_session)
+
+            if self.config["silver_tier_features"]["enable_analytics"]:
+                self.analytics_service = PredictiveAnalyticsService(db_session)
+
+            if self.config["integrations"]["calendar_enabled"]:
+                self.calendar_service = CalendarService(db_session)
+
+            self.silver_services_initialized = True
+            log_activity("SILVER_SERVICES_INITIALIZED",
+                        "Silver Tier services initialized successfully",
+                        str(self.vault_path))
+
+        except Exception as e:
+            self.logger.error(f"Error initializing Silver Tier services: {e}")
+            log_activity("SILVER_SERVICES_INIT_ERROR",
+                        f"Error initializing Silver Tier services: {str(e)}",
+                        str(self.vault_path))
 
     def start_watchers(self):
         """
@@ -55,6 +140,30 @@ class Orchestrator:
 
         # Set up file system monitoring for new tasks
         self.setup_task_monitoring()
+
+        # Start Silver Tier services if enabled
+        if self.silver_services_initialized:
+            self._start_silver_services()
+
+    def _start_silver_services(self):
+        """Start Silver Tier services"""
+        try:
+            # Start calendar sync if enabled
+            if self.config["integrations"]["calendar_enabled"] and self.calendar_service:
+                # In a real implementation, this would start a periodic sync
+                # For now, we'll just log that it's enabled
+                self.logger.info("Calendar integration enabled")
+
+            # Start learning processes if enabled
+            if self.config["silver_tier_features"]["enable_learning"] and self.learning_service:
+                self.logger.info("Learning service enabled")
+
+            # Start analytics if enabled
+            if self.config["silver_tier_features"]["enable_analytics"] and self.analytics_service:
+                self.logger.info("Analytics service enabled")
+
+        except Exception as e:
+            self.logger.error(f"Error starting Silver Tier services: {e}")
 
     def setup_task_monitoring(self):
         """
@@ -82,9 +191,48 @@ class Orchestrator:
             # Also process any approval requests
             self.processor.process_approval_requests()
 
+            # Apply Silver Tier features if enabled
+            if self.silver_services_initialized:
+                self._apply_silver_tier_features(processed_count)
+
         except Exception as e:
             self.logger.error(f"Error in Claude Code trigger: {e}")
             log_activity("ERROR", f"Error processing tasks: {e}", str(self.vault_path))
+
+    def _apply_silver_tier_features(self, processed_count: int):
+        """
+        Apply Silver Tier features after task processing
+        """
+        try:
+            # Run predictive analytics if enabled
+            if self.config["silver_tier_features"]["enable_analytics"] and self.analytics_service:
+                # Generate predictions and recommendations
+                recommendations = self.analytics_service.generate_personalized_recommendations(
+                    user_id="default_user"
+                )
+                self.logger.info(f"Generated {len(recommendations)} personalized recommendations")
+
+            # Run learning updates if enabled
+            if self.config["silver_tier_features"]["enable_learning"] and self.learning_service:
+                # Apply learning to task processing
+                self.learning_service.learn_from_user_behavior(user_id="default_user")
+
+            # Sync calendar if enabled
+            if self.config["integrations"]["calendar_enabled"] and self.calendar_service:
+                # Sync calendar events if configured
+                if self.config["calendar"]["sync_enabled"]:
+                    success = self.calendar_service.sync_calendar_events(
+                        user_id="default_user",
+                        provider=self.config["calendar"]["default_provider"]
+                    )
+                    if success:
+                        self.logger.info("Calendar events synced successfully")
+
+        except Exception as e:
+            self.logger.error(f"Error applying Silver Tier features: {e}")
+            log_activity("SILVER_FEATURE_ERROR",
+                        f"Error applying Silver Tier features: {str(e)}",
+                        str(self.vault_path))
 
     def run(self):
         """
