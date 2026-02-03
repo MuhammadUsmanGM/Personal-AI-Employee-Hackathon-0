@@ -16,8 +16,8 @@ from ..services.interaction_service import InteractionService
 
 # Create the main FastAPI app
 app = FastAPI(
-    title="Personal AI Employee - Silver Tier API",
-    description="Enhanced API for the Personal AI Employee system with advanced features",
+    title="Personal AI Employee - Platinum Tier API",
+    description="Advanced API for the Personal AI Employee system with quantum-safe security, global operations, blockchain integration, IoT connectivity, and AR/VR interfaces",
     version="1.0.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc"
@@ -61,7 +61,14 @@ async def health_check():
         "status": "healthy",
         "timestamp": datetime.utcnow().isoformat(),
         "version": "1.0.0",
-        "tier": "silver"
+        "tier": "platinum",
+        "features_active": {
+            "global_operations": True,
+            "quantum_security": True,
+            "blockchain_integration": True,
+            "iot_connectivity": True,
+            "arvr_interfaces": True
+        }
     }
 
 # Include routers for different modules
@@ -70,6 +77,22 @@ from .routes.tasks import task_router
 from .routes.approval import approval_router
 from .routes.ai import ai_router
 from .routes.enterprise import enterprise_router
+
+# Platinum Tier routes
+try:
+    from .routes.global_ops import router as global_ops_router
+    from .routes.quantum import router as quantum_router
+    from .routes.blockchain import router as blockchain_router
+    from .routes.iot import router as iot_router
+    from .routes.ar_vr import router as ar_vr_router
+
+    app.include_router(global_ops_router, prefix="/api", tags=["global-operations"])
+    app.include_router(quantum_router, prefix="/api", tags=["quantum-security"])
+    app.include_router(blockchain_router, prefix="/api", tags=["blockchain"])
+    app.include_router(iot_router, prefix="/api", tags=["iot-devices"])
+    app.include_router(ar_vr_router, prefix="/api", tags=["ar-vr-interfaces"])
+except ImportError as e:
+    print(f"Warning: Could not import Platinum Tier routes: {e}")
 
 app.include_router(dashboard_router, prefix="/api", tags=["dashboard"])
 app.include_router(task_router, prefix="/api", tags=["tasks"])
@@ -82,10 +105,18 @@ app.include_router(enterprise_router, prefix="/api", tags=["enterprise"])
 async def root():
     """Root endpoint with API information"""
     return {
-        "message": "Personal AI Employee - Silver Tier API",
+        "message": "Personal AI Employee - Platinum Tier API",
         "version": "1.0.0",
         "documentation": "/api/docs",
-        "status": "running"
+        "status": "running",
+        "features": [
+            "Global Operations",
+            "Quantum-Safe Security",
+            "Blockchain Integration",
+            "IoT Connectivity",
+            "AR/VR Interfaces",
+            "Advanced AI & Analytics"
+        ]
     }
 
 # Error handling

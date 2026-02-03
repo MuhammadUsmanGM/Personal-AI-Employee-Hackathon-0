@@ -109,6 +109,82 @@ class ConfigManager:
                 "calendar_enabled": os.getenv("CALENDAR_INTEGRATION_ENABLED", "false").lower() == "true",
                 "crm_enabled": os.getenv("CRM_ENABLED", "false").lower() == "true",
                 "project_management_enabled": os.getenv("PROJECT_MANAGEMENT_ENABLED", "false").lower() == "true"
+            },
+            # Global configuration for Platinum Tier
+            "global": {
+                "region": os.getenv("GLOBAL_REGION", "us-east-1"),
+                "scale": {
+                    "enabled": os.getenv("GLOBAL_SCALE_ENABLED", "true").lower() == "true",
+                    "multi_region_support": os.getenv("MULTI_REGION_SUPPORT", "true").lower() == "true"
+                }
+            },
+
+            # Quantum security configuration
+            "quantum": {
+                "encryption": {
+                    "enabled": os.getenv("QUANTUM_ENCRYPTION_ENABLED", "true").lower() == "true"
+                },
+                "key_rotation_interval": int(os.getenv("QUANTUM_KEY_ROTATION_INTERVAL", "24")),  # hours
+                "secure_communication": os.getenv("QUANTUM_SECURE_COMMUNICATION", "true").lower() == "true"
+            },
+
+            # Blockchain integration configuration
+            "blockchain": {
+                "network": os.getenv("BLOCKCHAIN_NETWORK", "ethereum"),
+                "rpc_url": os.getenv("BLOCKCHAIN_RPC_URL", "https://mainnet.infura.io/v3/YOUR_PROJECT_ID"),
+                "smart_contract_address": os.getenv("SMART_CONTRACT_ADDRESS", "0x...")
+            },
+
+            # IoT device management configuration
+            "iot": {
+                "device_manager": {
+                    "enabled": os.getenv("IOT_DEVICE_MANAGER_ENABLED", "true").lower() == "true"
+                },
+                "device_api_key": os.getenv("IOT_DEVICE_API_KEY", ""),
+                "connection_timeout": int(os.getenv("IOT_DEVICE_CONNECTION_TIMEOUT", "30"))
+            },
+
+            # AR/VR interface configuration
+            "arvr": {
+                "interface": {
+                    "enabled": os.getenv("ARVR_INTERFACE_ENABLED", "true").lower() == "true"
+                },
+                "rendering_engine": os.getenv("ARVR_RENDERING_ENGINE", "unity"),
+                "supported_platforms": os.getenv("ARVR_SUPPORTED_PLATFORMS", "windows,macos,android").split(",")
+            },
+
+            # Global scaling configuration
+            "global_scaling": {
+                "load_balancer": os.getenv("GLOBAL_LOAD_BALANCER", "http://global-lb.example.com"),
+                "regional_endpoints": json.loads(os.getenv("REGIONAL_ENDPOINTS", '["http://us-east.example.com", "http://eu-west.example.com"]')),
+                "auto_scaling_enabled": os.getenv("AUTO_SCALING_ENABLED", "true").lower() == "true"
+            },
+
+            # PostgreSQL for enterprise analytics
+            "postgres": {
+                "host": os.getenv("POSTGRES_HOST", "localhost"),
+                "port": int(os.getenv("POSTGRES_PORT", "5432")),
+                "db": os.getenv("POSTGRES_DB", "enterprise_analytics"),
+                "user": os.getenv("POSTGRES_USER", "analytics_user"),
+                "password": os.getenv("POSTGRES_PASSWORD", "secure_password")
+            },
+
+            # Advanced AI configuration
+            "ai": {
+                "use_quantum": os.getenv("USE_QUANTUM_AI", "true").lower() == "true",
+                "quantum_processor_provider": os.getenv("QUANTUM_PROCESSOR_PROVIDER", "qiskit"),
+                "federated_learning_enabled": os.getenv("FEDERATED_LEARNING_ENABLED", "true").lower() == "true"
+            },
+
+            # Platinum Tier specific features
+            "platinum_tier_features": {
+                "enable_global_operations": os.getenv("ENABLE_GLOBAL_OPERATIONS", "true").lower() == "true",
+                "enable_quantum_security": os.getenv("ENABLE_QUANTUM_SECURITY", "true").lower() == "true",
+                "enable_blockchain_integration": os.getenv("ENABLE_BLOCKCHAIN_INTEGRATION", "true").lower() == "true",
+                "enable_iot_connectivity": os.getenv("ENABLE_IOT_CONNECTIVITY", "true").lower() == "true",
+                "enable_arvr_interfaces": os.getenv("ENABLE_ARVR_INTERFACES", "true").lower() == "true",
+                "enable_predictive_analytics": os.getenv("ENABLE_PREDICTIVE_ANALYTICS", "true").lower() == "true",
+                "enable_autonomous_operations": os.getenv("ENABLE_AUTONOMOUS_OPERATIONS", "true").lower() == "true"
             }
         }
 
