@@ -53,6 +53,10 @@ from src.utils.universal_translator import (
     get_universal_translation_engine,
 )
 
+# Database imports for dependency injection
+from sqlalchemy.orm import Session
+from src.services.database import SessionLocal, init_db
+
 logger = logging.getLogger(__name__)
 
 # Initialize FastAPI app
@@ -935,6 +939,15 @@ async def custom_server_error_exception_handler(request, exc):
     }
 
 # Utility functions
+# Define get_db function if not already defined
+def get_db():
+    """Get database session"""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 def get_task_service(db: Session = Depends(get_db)):
     """Get task service instance"""
     return TaskService(db)
