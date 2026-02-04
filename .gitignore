@@ -72,3 +72,8 @@ coverage.xml
 # Obsidian
 .obsidian/.*
 !obsidian_vault/.obsidian/
+
+
+
+GUIDE.md
+node_modules/
