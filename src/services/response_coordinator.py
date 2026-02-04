@@ -17,9 +17,10 @@ class ResponseCoordinator:
     Service to coordinate response sending across all communication channels
     """
     def __init__(self, vault_path: str = "./obsidian_vault"):
-        self.email_handler = EmailResponseHandler()
-        self.linkedin_handler = LinkedInResponseHandler()
-        self.whatsapp_handler = WhatsAppResponseHandler()
+        # Initialize handlers lazily to avoid credential issues during instantiation
+        self._email_handler = None
+        self._linkedin_handler = None
+        self._whatsapp_handler = None
 
         self.conversation_tracker = ConversationTracker(vault_path)
         self.approval_workflow = ApprovalWorkflow(vault_path)
@@ -33,6 +34,30 @@ class ResponseCoordinator:
             CommunicationChannel.LINKEDIN: {"requests": [], "limit": 100, "window": 3600},  # 100/hour estimate
             CommunicationChannel.WHATSAPP: {"requests": [], "limit": 50, "window": 3600}  # 50/hour estimate
         }
+
+    @property
+    def email_handler(self):
+        """Lazy initialization of email handler"""
+        if self._email_handler is None:
+            from src.response_handlers.email_response_handler import EmailResponseHandler
+            self._email_handler = EmailResponseHandler()
+        return self._email_handler
+
+    @property
+    def linkedin_handler(self):
+        """Lazy initialization of LinkedIn handler"""
+        if self._linkedin_handler is None:
+            from src.response_handlers.linkedin_response_handler import LinkedInResponseHandler
+            self._linkedin_handler = LinkedInResponseHandler()
+        return self._linkedin_handler
+
+    @property
+    def whatsapp_handler(self):
+        """Lazy initialization of WhatsApp handler"""
+        if self._whatsapp_handler is None:
+            from src.response_handlers.whatsapp_response_handler import WhatsAppResponseHandler
+            self._whatsapp_handler = WhatsAppResponseHandler()
+        return self._whatsapp_handler
 
     async def queue_response(self, original_message_id: str, channel: CommunicationChannel,
                            recipient_identifier: str, content: str, response_type: ResponseType = ResponseType.INFORMATIONAL,

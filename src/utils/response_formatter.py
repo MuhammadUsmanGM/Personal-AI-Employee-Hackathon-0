@@ -27,16 +27,23 @@ class ResponseFormatter:
         Returns:
             Formatted content string
         """
+        # First, apply basic text processing to handle markdown-like syntax
+        processed_content = content
+
+        # Handle bold formatting **text**
+        import re
+        processed_content = re.sub(r'\*\*(.*?)\*\*', r'\1', processed_content)  # Remove bold markers
+
         # Apply channel-specific formatting
         if channel.lower() == 'email':
-            formatted_content = ResponseFormatter._format_for_email(content, format_type)
+            formatted_content = ResponseFormatter._format_for_email(processed_content, format_type)
         elif channel.lower() == 'linkedin':
-            formatted_content = ResponseFormatter._format_for_linkedin(content)
+            formatted_content = ResponseFormatter._format_for_linkedin(processed_content)
         elif channel.lower() == 'whatsapp':
-            formatted_content = ResponseFormatter._format_for_whatsapp(content)
+            formatted_content = ResponseFormatter._format_for_whatsapp(processed_content)
         else:
             # Default formatting
-            formatted_content = content.strip()
+            formatted_content = processed_content.strip()
 
         # Apply length limits if specified
         if max_length and len(formatted_content) > max_length:
