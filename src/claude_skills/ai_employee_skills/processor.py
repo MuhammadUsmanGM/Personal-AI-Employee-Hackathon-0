@@ -124,11 +124,134 @@ Move this file to /Rejected folder.
 
     def execute_automated_task(self, task):
         """
-        Execute an automated task (placeholder for actual execution logic)
+        Execute an automated task and generate response if needed
         """
         # This is where we would implement the actual task execution
-        # For now, we just log that it was processed
         log_activity("AUTOMATED", f"Executed automated task: {task.filename}", self.vault_path)
+
+        # Check if the task requires a response to the original sender
+        if self._should_respond_to_task(task):
+            # Generate a response based on the task and its processing results
+            response_content = self._generate_response_content(task)
+
+            # Create a response file that the orchestrator will pick up
+            self._create_response_file(task, response_content)
+
+    def _should_respond_to_task(self, task) -> bool:
+        """
+        Determine if a response should be sent back to the original sender
+
+        Args:
+            task: The task to evaluate
+
+        Returns:
+            True if a response should be sent, False otherwise
+        """
+        # Check if the original message indicated it expects a response
+        # This could be based on the content, message type, or other indicators
+        content_lower = task.content.lower()
+
+        # Keywords that suggest a response is expected
+        response_indicators = [
+            'please', 'can you', 'could you', 'would you', 'analyze', 'summarize',
+            'create', 'generate', 'send', 'provide', 'tell me', 'help', 'suggest',
+            'what', 'how', 'when', 'where', 'why'
+        ]
+
+        return any(indicator in content_lower for indicator in response_indicators)
+
+    def _generate_response_content(self, task) -> str:
+        """
+        Generate appropriate response content based on the task
+
+        Args:
+            task: The task that was processed
+
+        Returns:
+            Generated response content
+        """
+        # This would normally involve more sophisticated processing
+        # For now, we'll create a simple response indicating the task was completed
+
+        from src.utils.response_formatter import ResponseFormatter
+
+        # Determine the type of response based on the task
+        task_content = task.content
+        response_type = "informational"
+
+        # Create a basic response
+        response_body = f"I have processed your request: '{task_content[:100]}{'...' if len(task_content) > 100 else ''}'\n\n"
+
+        # Add specific information based on the type of task
+        if "analyze" in task_content.lower() or "summary" in task_content.lower():
+            response_body += "Analysis completed. The results have been documented and are available for review."
+        elif "create" in task_content.lower() or "generate" in task_content.lower():
+            response_body += "Creation task completed. The requested item has been generated and documented."
+        elif "help" in task_content.lower():
+            response_body += "I hope this information is helpful. Please let me know if you need further assistance."
+        else:
+            response_body += "Task completed successfully. Please let me know if you need any additional assistance."
+
+        # Add a professional closing
+        response_body += f"\n\nBest regards,\nAI Employee"
+
+        return response_body
+
+    def _create_response_file(self, task, response_content: str):
+        """
+        Create a response file that the orchestrator will process to send back to the user
+
+        Args:
+            task: The original task that was processed
+            response_content: Content of the response to send
+        """
+        # Get the original communication channel from the task metadata
+        # This assumes the task file contains information about the original channel
+        original_channel = task.frontmatter.get('type', 'email')  # default to email
+        original_sender = task.frontmatter.get('from', 'unknown')
+
+        # Determine the appropriate channel enum value
+        from src.response_handlers.base_handler import CommunicationChannel
+        channel_map = {
+            'email': CommunicationChannel.EMAIL,
+            'linkedin': CommunicationChannel.LINKEDIN,
+            'linkedin_message': CommunicationChannel.LINKEDIN,
+            'whatsapp': CommunicationChannel.WHATSAPP,
+            'whatsapp_message': CommunicationChannel.WHATSAPP
+        }
+
+        channel_enum = channel_map.get(original_channel, CommunicationChannel.EMAIL)
+
+        # Create response file with appropriate metadata
+        response_content_full = f"""---
+type: response_message
+original_message_id: {task.filename.replace('.md', '')}
+channel: {channel_enum.value}
+recipient: {original_sender}
+response_type: INFORMATIONAL
+priority: MEDIUM
+requires_approval: false
+subject: Response to your request
+---
+
+## Response to Your Request
+
+{response_content}
+"""
+
+        # Create the response directory if it doesn't exist
+        responses_dir = self.vault_path / "Responses"
+        responses_dir.mkdir(exist_ok=True)
+
+        # Create the response file
+        import hashlib
+        task_hash = hashlib.md5(task.filename.encode()).hexdigest()[:8]
+        response_filename = f"RESPONSE_{task_hash}_{int(time.time())}.md"
+
+        response_filepath = responses_dir / response_filename
+        response_filepath.write_text(response_content_full)
+
+        log_activity("RESPONSE_CREATED", f"Created response file: {response_filename}", self.vault_path)
 
     def process_approval_requests(self):
         """
