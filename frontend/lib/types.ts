@@ -67,3 +67,24 @@ export interface ApprovalRequest {
   status: 'pending' | 'approved' | 'rejected' | 'expired';
   details: string;
 }
+
+export interface Message {
+  id: string;
+  sender: string;
+  content: string;
+  timestamp: string;
+  is_ai: boolean;
+}
+
+export interface Communication {
+  id: string;
+  platform: 'email' | 'whatsapp' | 'slack' | 'twitter';
+  contact_name: string;
+  contact_identifier: string;
+  last_message: string;
+  last_timestamp: string;
+  unread_count: number;
+  sentiment_score: number;
+  status: 'active' | 'archived' | 'needs_reply';
+  history: Message[];
+}

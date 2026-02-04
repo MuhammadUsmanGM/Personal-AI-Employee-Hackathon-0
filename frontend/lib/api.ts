@@ -1,4 +1,4 @@
-import { DashboardData, ConsciousnessState, RealityStatus, Task, ApprovalRequest } from "./types";
+import { DashboardData, ConsciousnessState, RealityStatus, Task, ApprovalRequest, Communication } from "./types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
@@ -71,7 +71,6 @@ export async function fetchTasks(): Promise<Task[]> {
     }
   ] as Task[];
 }
-
 export async function fetchApprovals(): Promise<ApprovalRequest[]> {
   return [
     {
@@ -86,4 +85,39 @@ export async function fetchApprovals(): Promise<ApprovalRequest[]> {
       details: "Subject: RE: Investment Opportunity\n\nDear Investor, we would be happy to discuss..."
     }
   ] as ApprovalRequest[];
+}
+
+export async function fetchCommunications(): Promise<Communication[]> {
+  return [
+    {
+      id: "COM_1",
+      platform: "email",
+      contact_name: "John Doe",
+      contact_identifier: "john@example.com",
+      last_message: "The proposal looks solid. Let's move forward.",
+      last_timestamp: new Date().toISOString(),
+      unread_count: 0,
+      sentiment_score: 0.85,
+      status: "active",
+      history: [
+        { id: "M1", sender: "John Doe", content: "Hey ELYX, looking for the proposal.", timestamp: "2026-02-04T10:00:00Z", is_ai: false },
+        { id: "M2", sender: "ELYX", content: "Generating proposal now. One moment.", timestamp: "2026-02-04T10:01:00Z", is_ai: true },
+        { id: "M3", sender: "John Doe", content: "The proposal looks solid. Let's move forward.", timestamp: "2026-02-04T13:00:00Z", is_ai: false }
+      ]
+    },
+    {
+      id: "COM_2",
+      platform: "whatsapp",
+      contact_name: "Sarah Smith",
+      contact_identifier: "+1234567890",
+      last_message: "Can you check the latest reality leak on domain #4?",
+      last_timestamp: new Date(Date.now() - 10 * 60000).toISOString(),
+      unread_count: 1,
+      sentiment_score: 0.45,
+      status: "needs_reply",
+      history: [
+        { id: "M4", sender: "Sarah Smith", content: "Can you check the latest reality leak on domain #4?", timestamp: "2026-02-04T13:30:00Z", is_ai: false }
+      ]
+    }
+  ] as Communication[];
 }
