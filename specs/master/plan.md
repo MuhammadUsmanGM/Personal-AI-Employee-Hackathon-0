@@ -7,7 +7,7 @@
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+Implementation of bidirectional communication for the AI employee, enabling it to respond back to users through the same channels it receives messages from (Gmail, LinkedIn, WhatsApp). The solution includes response processors for each platform, conversation context tracking, and approval workflows for sensitive communications.
 
 ## Technical Context
 
@@ -17,21 +17,23 @@
   the iteration process.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Language/Version**: Python 3.13, JavaScript/Node.js, Claude Code agent framework
+**Primary Dependencies**: Playwright, google-api-python-client, whatsapp-business-api-sdk, anthropic
+**Storage**: Obsidian vault (local markdown files), environment variables for credentials
+**Testing**: pytest for Python components, Claude Code native testing
+**Target Platform**: Windows/Linux/MacOS local deployment
+**Project Type**: Single project with microservices architecture (watchers + Claude Code + MCP servers)
+**Performance Goals**: Response time under 30 seconds, 99% uptime for communication channels
+**Constraints**: Local-first architecture, human-in-the-loop for sensitive actions, credential encryption, API rate limiting compliance
+**Scale/Scope**: Single AI employee with multiple communication channels
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Constitution compliance: PASS - Follows local-first architecture, human-in-the-loop approval, agent skills pattern
+- Hard requirements: PASS - Uses Claude Code, Obsidian vault, file-based approval workflow
+- Security requirements: PASS - Credentials stored securely, audit logging, rate limiting
 
 ## Project Structure
 
@@ -56,43 +58,31 @@ specs/[###-feature]/
 -->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
 src/
-├── models/
+├── response_handlers/
+│   ├── email_response_handler.py
+│   ├── linkedin_response_handler.py
+│   └── whatsapp_response_handler.py
 ├── services/
-├── cli/
-└── lib/
+│   ├── response_coordinator.py
+│   ├── conversation_tracker.py
+│   └── approval_workflow.py
+├── utils/
+│   └── response_formatter.py
+└── agents/
+    └── response_processor.skill
 
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+obsidian_vault/
+├── /Needs_Action/
+├── /Plans/
+├── /Pending_Approval/
+├── /Done/
+├── /Logs/
+├── Dashboard.md
+└── Company_Handbook.md
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: Extension of existing architecture with dedicated response handlers for each communication channel, maintaining separation of concerns.
 
 ## Complexity Tracking
 
