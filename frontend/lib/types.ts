@@ -42,3 +42,28 @@ export interface DashboardData {
     version: string;
   };
 }
+
+export interface Task {
+  id: string;
+  type: 'email' | 'whatsapp' | 'file_drop' | 'finance' | 'general';
+  from: string;
+  priority: 'low' | 'medium' | 'high' | 'critical';
+  status: 'pending' | 'in_progress' | 'completed' | 'failed';
+  created: string;
+  subject?: string;
+  content: string;
+  suggested_actions?: string[];
+}
+
+export interface ApprovalRequest {
+  id: string;
+  type: 'approval_request';
+  action: string;
+  amount?: number;
+  recipient?: string;
+  reason: string;
+  created: string;
+  expires: string;
+  status: 'pending' | 'approved' | 'rejected' | 'expired';
+  details: string;
+}

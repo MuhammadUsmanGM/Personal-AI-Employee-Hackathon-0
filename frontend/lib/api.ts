@@ -1,4 +1,4 @@
-import { DashboardData, ConsciousnessState, RealityStatus } from "./types";
+import { DashboardData, ConsciousnessState, RealityStatus, Task, ApprovalRequest } from "./types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
@@ -42,4 +42,48 @@ export async function fetchDashboardData(): Promise<DashboardData> {
     console.error("Dashboard data fetch error:", error);
     throw error;
   }
+}
+
+export async function fetchTasks(): Promise<Task[]> {
+  // Simulating fetching tasks from /Needs_Action via backend
+  // In reality, would be: const response = await fetch(`${API_BASE_URL}/tasks/pending`);
+  return [
+    {
+      id: "EMAIL_123",
+      type: "email",
+      from: "investor@example.com",
+      priority: "high",
+      status: "pending",
+      created: new Date().toISOString(),
+      subject: "Investment Opportunity",
+      content: "I'm interested in the new Diamond Tier rollout. Can we discuss?",
+      suggested_actions: ["Draft reply", "Schedule meeting", "Archive"]
+    },
+    {
+      id: "WA_456",
+      type: "whatsapp",
+      from: "+1234567890",
+      priority: "critical",
+      status: "pending",
+      created: new Date(Date.now() - 3600000).toISOString(),
+      content: "Urgent: Payment gateway is down in simulation scenario #4.",
+      suggested_actions: ["Check logs", "Restart service", "Alert engineering"]
+    }
+  ] as Task[];
+}
+
+export async function fetchApprovals(): Promise<ApprovalRequest[]> {
+  return [
+    {
+      id: "APP_789",
+      type: "approval_request",
+      action: "send_email",
+      recipient: "investor@example.com",
+      reason: "Proposed reply to investment inquiry",
+      created: new Date().toISOString(),
+      expires: new Date(Date.now() + 86400000).toISOString(),
+      status: "pending",
+      details: "Subject: RE: Investment Opportunity\n\nDear Investor, we would be happy to discuss..."
+    }
+  ] as ApprovalRequest[];
 }
