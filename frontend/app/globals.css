@@ -1,26 +1,84 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #020617;
+  --foreground: #f8fafc;
+  
+  /* Emerald Blue Core Palette */
+  --primary: #06b6d4; /* Cyan 500 */
+  --primary-glow: rgba(6, 182, 212, 0.15);
+  --accent: #10b981; /* Emerald 500 */
+  --accent-glow: rgba(16, 185, 129, 0.15);
+  
+  --card: rgba(15, 23, 42, 0.6);
+  --card-border: rgba(30, 41, 59, 0.5);
+  
+  --emerald-blue-gradient: linear-gradient(135deg, #06b6d4 0%, #10b981 100%);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-card: var(--card);
+  --color-card-border: var(--card-border);
+  
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  background-image: 
+    radial-gradient(circle at 0% 0%, rgba(6, 182, 212, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+  min-height: 100vh;
+}
+
+/* Premium Glassmorphism Utility */
+.glass-panel {
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.emerald-blue-text {
+  background: var(--emerald-blue-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.emerald-blue-glow {
+  box-shadow: 0 0 20px var(--primary-glow);
+}
+
+/* Premium Hover Effects */
+.premium-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.premium-hover:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.2), 0 8px 10px -6px rgba(16, 185, 129, 0.2);
+  border-color: rgba(6, 182, 212, 0.4);
+}
+
+.interactive-item {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.interactive-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+button, a {
+  cursor: pointer;
 }
