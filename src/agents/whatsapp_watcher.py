@@ -1,9 +1,10 @@
 from playwright.sync_api import sync_playwright
-from base_watcher import BaseWatcher
+from ..base_watcher import BaseWatcher
 from pathlib import Path
 import json
 from datetime import datetime
 import time
+import os
 
 class WhatsAppWatcher(BaseWatcher):
     """

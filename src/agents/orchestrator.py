@@ -221,6 +221,9 @@ class Orchestrator:
         # Set up file system monitoring for new tasks
         self.setup_task_monitoring()
 
+        # Start communication watchers
+        self.start_communication_watchers()
+
         # Start Silver Tier services if enabled
         if self.silver_services_initialized:
             self._start_silver_services()
@@ -228,6 +231,75 @@ class Orchestrator:
         # Start Platinum Tier services if enabled
         if self.platinum_services_initialized:
             self._start_platinum_services()
+
+    def start_communication_watchers(self):
+        """
+        Start communication watchers for email, LinkedIn, and WhatsApp
+        """
+        try:
+            self.logger.info("Starting communication watchers...")
+
+            # Start Gmail watcher if configured
+            if self.config.get("integrations", {}).get("gmail_enabled", True):
+                try:
+                    from src.agents.gmail_watcher import GmailWatcher
+                    gmail_watcher = GmailWatcher(str(self.vault_path))
+                    gmail_thread = threading.Thread(target=self._run_watcher, args=("Gmail", gmail_watcher), daemon=True)
+                    gmail_thread.start()
+                    self.running_watchers.append(gmail_thread)
+                    self.logger.info("Gmail watcher started")
+                except ImportError as e:
+                    self.logger.warning(f"Gmail watcher not available: {e}")
+                except Exception as e:
+                    self.logger.error(f"Error starting Gmail watcher: {e}")
+
+            # Start WhatsApp watcher if configured
+            if self.config.get("integrations", {}).get("whatsapp_enabled", True):
+                try:
+                    from src.agents.whatsapp_watcher import WhatsAppWatcher
+                    whatsapp_watcher = WhatsAppWatcher(str(self.vault_path))
+                    whatsapp_thread = threading.Thread(target=self._run_watcher, args=("WhatsApp", whatsapp_watcher), daemon=True)
+                    whatsapp_thread.start()
+                    self.running_watchers.append(whatsapp_thread)
+                    self.logger.info("WhatsApp watcher started")
+                except ImportError as e:
+                    self.logger.warning(f"WhatsApp watcher not available: {e}")
+                except Exception as e:
+                    self.logger.error(f"Error starting WhatsApp watcher: {e}")
+
+            # Start LinkedIn watcher if configured
+            if self.config.get("integrations", {}).get("linkedin_enabled", True):
+                try:
+                    from src.agents.linkedin_watcher import LinkedInWatcher
+                    linkedin_watcher = LinkedInWatcher(str(self.vault_path))
+                    linkedin_thread = threading.Thread(target=self._run_watcher, args=("LinkedIn", linkedin_watcher), daemon=True)
+                    linkedin_thread.start()
+                    self.running_watchers.append(linkedin_thread)
+                    self.logger.info("LinkedIn watcher started")
+                except ImportError as e:
+                    self.logger.warning(f"LinkedIn watcher not available: {e}")
+                except Exception as e:
+                    self.logger.error(f"Error starting LinkedIn watcher: {e}")
+
+        except Exception as e:
+            self.logger.error(f"Error starting communication watchers: {e}")
+
+    def _run_watcher(self, name: str, watcher):
+        """Helper method to run a watcher continuously"""
+        try:
+            self.logger.info(f"Starting {name} watcher...")
+            while True:
+                try:
+                    items = watcher.check_for_updates()
+                    for item in items:
+                        action_file = watcher.create_action_file(item)
+                        self.logger.info(f"Created action file: {action_file}")
+                except Exception as e:
+                    self.logger.error(f"Error in {name} watcher: {e}")
+
+                time.sleep(watcher.check_interval)
+        except Exception as e:
+            self.logger.error(f"Fatal error in {name} watcher: {e}")
 
     def _start_silver_services(self):
         """Start Silver Tier services"""

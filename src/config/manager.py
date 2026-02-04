@@ -51,6 +51,11 @@ class ConfigManager:
                 "session_path": os.getenv("WHATSAPP_SESSION_PATH", "~/.whatsapp_session"),
                 "keywords": ["urgent", "asap", "invoice", "payment", "help", "emergency", "critical", "important"]
             },
+            "linkedin": {
+                "session_path": os.getenv("LINKEDIN_SESSION_PATH", "~/.linkedin_session"),
+                "keywords": ["urgent", "asap", "meeting", "proposal", "opportunity", "help", "important", "follow", "contact"],
+                "check_interval": int(os.getenv("LINKEDIN_CHECK_INTERVAL", "300"))  # seconds
+            },
             "calendar": {
                 "sync_enabled": os.getenv("CALENDAR_SYNC_ENABLED", "false").lower() == "true",
                 "providers": ["google", "outlook"],  # Supported providers
@@ -108,7 +113,10 @@ class ConfigManager:
             "integrations": {
                 "calendar_enabled": os.getenv("CALENDAR_INTEGRATION_ENABLED", "false").lower() == "true",
                 "crm_enabled": os.getenv("CRM_ENABLED", "false").lower() == "true",
-                "project_management_enabled": os.getenv("PROJECT_MANAGEMENT_ENABLED", "false").lower() == "true"
+                "project_management_enabled": os.getenv("PROJECT_MANAGEMENT_ENABLED", "false").lower() == "true",
+                "gmail_enabled": os.getenv("GMAIL_ENABLED", "true").lower() == "true",
+                "whatsapp_enabled": os.getenv("WHATSAPP_ENABLED", "true").lower() == "true",
+                "linkedin_enabled": os.getenv("LINKEDIN_ENABLED", "true").lower() == "true"
             },
             # Global configuration for Platinum Tier
             "global": {
