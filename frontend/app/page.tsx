@@ -138,7 +138,7 @@ export default function LandingPage() {
             <div className="absolute -inset-10 bg-primary/10 blur-[120px] rounded-full animate-pulse-slow" />
             <div className="relative rounded-[3rem] p-2 bg-gradient-to-br from-card-border/50 to-transparent border border-card-border shadow-2xl overflow-hidden">
                <Image 
-                 src="/ai_employee_hero_visual.png" 
+                 src="/ai_employee_hero.png" 
                  alt="Professional AI Interface" 
                  width={1200} 
                  height={800} 
@@ -318,7 +318,7 @@ export default function LandingPage() {
            <div className="absolute inset-0 bg-primary/5 blur-[150px] rounded-full" />
            <div className="relative rounded-[3rem] p-3 bg-gradient-to-br from-card-border to-transparent border border-card-border shadow-[0_0_80px_rgba(0,0,0,0.5)] transform hover:scale-[1.01] transition-transform duration-700">
               <Image 
-                src="/dashboard_preview_mockup.png" 
+                src="/dashboard_preview.png" 
                 alt="ELYX Dashboard Visual" 
                 width={1600} 
                 height={1000} 
