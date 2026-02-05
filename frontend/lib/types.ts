@@ -134,3 +134,13 @@ export interface RealityScenario {
   description: string;
   last_calculation: string;
 }
+
+export interface TemporalTask {
+  id: string;
+  title: string;
+  scheduled_time: string;
+  timeline: 'primary' | 'simulated' | 'historical';
+  priority: 'low' | 'medium' | 'high';
+  status: 'scheduled' | 'running' | 'completed' | 'failed';
+  impact_coefficient: number;
+}

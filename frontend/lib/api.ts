@@ -1,4 +1,4 @@
-import { DashboardData, ConsciousnessState, RealityStatus, Task, ApprovalRequest, Communication, Transaction, KPI, BusinessWorkflow, ConsciousnessHistory, RealityScenario } from "./types";
+import { DashboardData, ConsciousnessState, RealityStatus, Task, ApprovalRequest, Communication, Transaction, KPI, BusinessWorkflow, ConsciousnessHistory, RealityScenario, TemporalTask } from "./types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
@@ -204,4 +204,45 @@ export async function fetchRealityScenarios(): Promise<RealityScenario[]> {
       last_calculation: new Date().toISOString() 
     }
   ] as RealityScenario[];
+}
+
+export async function fetchTemporalTasks(): Promise<TemporalTask[]> {
+  return [
+    { 
+      id: "TT1", 
+      title: "Quarterly Financial Prophet Sync", 
+      scheduled_time: new Date(Date.now() + 3600000).toISOString(), 
+      timeline: "primary", 
+      priority: "high", 
+      status: "scheduled", 
+      impact_coefficient: 0.88 
+    },
+    { 
+      id: "TT2", 
+      title: "Historical Data Reconciliation", 
+      scheduled_time: new Date(Date.now() - 7200000).toISOString(), 
+      timeline: "historical", 
+      priority: "medium", 
+      status: "completed", 
+      impact_coefficient: 0.42 
+    },
+    { 
+      id: "TT3", 
+      title: "Simulated Market Crash Analysis", 
+      scheduled_time: new Date().toISOString(), 
+      timeline: "simulated", 
+      priority: "high", 
+      status: "running", 
+      impact_coefficient: 0.95 
+    },
+    { 
+      id: "TT4", 
+      title: "Next-Year Revenue Projection", 
+      scheduled_time: new Date(Date.now() + 86400000).toISOString(), 
+      timeline: "simulated", 
+      priority: "low", 
+      status: "scheduled", 
+      impact_coefficient: 0.65 
+    }
+  ] as TemporalTask[];
 }
