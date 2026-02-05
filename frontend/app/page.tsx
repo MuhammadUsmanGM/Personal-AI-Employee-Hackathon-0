@@ -1,135 +1,174 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { 
-  Activity, 
+  ArrowRight, 
+  Shield, 
+  Zap, 
   BrainCircuit, 
-  CheckCircle2,
   Globe2, 
-  ShieldCheck, 
-  MoreVertical,
-  Loader2
+  ChevronDown,
+  Play,
+  CheckCircle2,
+  Cpu
 } from "lucide-react";
-import { fetchDashboardData } from "@/lib/api";
-import { DashboardData } from "@/lib/types";
 
-export default function Home() {
-  const [data, setData] = useState<DashboardData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
-  const loadDashboard = async (isRefresh = false) => {
-    try {
-      if (isRefresh) setRefreshing(true);
-      const dashData = await fetchDashboardData();
-      setData(dashData);
-    } catch (error) {
-      console.error("Dashboard error:", error);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
+export default function LandingPage() {
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    loadDashboard();
-    const interval = setInterval(() => loadDashboard(true), 15000);
-    return () => clearInterval(interval);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <div>
-      <div className="flex items-end justify-between mb-8">
-        <div>
-          <h1 className="text-4xl font-black tracking-tight mb-2">
-            Welcome back, <span className="emerald-blue-text">ELYX</span>
-          </h1>
-          <p className="text-slate-400 font-medium">Monitoring infinite realties and {data?.tasks.active_chains || 0} concurrent task chains.</p>
-        </div>
-        <button 
-          onClick={() => loadDashboard(true)}
-          className="flex items-center gap-2 px-5 py-2.5 bg-emerald-blue-gradient rounded-xl font-bold text-sm text-slate-950 hover:opacity-90 transition-all shadow-lg shadow-primary/20 cursor-pointer active:scale-95 disabled:opacity-50"
-          disabled={refreshing}
-        >
-          {refreshing ? <Loader2 size={18} className="animate-spin" /> : <Activity size={18} />}
-          Refresh Neural State
-        </button>
-      </div>
-
-      {/* Dashboard Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {[
-          { label: "Neural Stability", value: `${data?.consciousness.phi.toFixed(1) || "..."}%`, color: "text-primary", icon: <BrainCircuit /> },
-          { label: "Tasks Active", value: data?.tasks.active_chains.toString() || "...", color: "text-accent", icon: <CheckCircle2 /> },
-          { label: "Reality Coherence", value: data?.reality.stability_index.toFixed(3) || "...", color: "text-primary", icon: <Globe2 /> },
-          { label: "Pending Approvals", value: data?.tasks.pending_count.toString() || "...", color: "text-red-400", icon: <ShieldCheck /> },
-        ].map((stat, i) => (
-          <div key={i} className="glass-panel p-6 rounded-2xl group premium-hover transition-all">
-            <div className="flex items-center justify-between mb-4">
-              <div className={`p-2 rounded-lg bg-slate-900 border border-card-border ${stat.color} group-hover:emerald-blue-glow transition-all`}>
-                {stat.icon}
-              </div>
-              <MoreVertical size={16} className="text-slate-600 hover:text-white transition-colors cursor-pointer" />
-            </div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">{stat.label}</p>
-            <h3 className={`text-2xl font-black ${stat.color}`}>{stat.value}</h3>
-          </div>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 glass-panel rounded-3xl p-8 min-h-[400px]">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-xl font-bold">Neural Activity Stream</h2>
-            <div className="flex gap-2">
-              <div className="px-3 py-1 bg-slate-800 rounded-lg text-xs font-bold text-slate-400">Live</div>
-              <div className="px-3 py-1 bg-slate-800 rounded-lg text-xs font-bold text-primary cursor-pointer hover:bg-slate-700 transition-colors">History</div>
-            </div>
+    <div className="min-h-screen bg-[#020617] text-slate-50 selection:bg-primary selection:text-slate-950 overflow-x-hidden">
+      {/* Navigation */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled ? "bg-[#020617]/80 backdrop-blur-lg border-b border-card-border py-4" : "py-6"
+      }`}>
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+             <div className="relative w-8 h-8">
+               <Image src="/icon.png" alt="ELYX" fill className="object-contain" />
+             </div>
+             <Image src="/text.png" alt="ELYX" width={70} height={18} className="object-contain" />
           </div>
           
-          {loading ? (
-            <div className="flex flex-col items-center justify-center h-64 gap-4">
-              <Loader2 size={48} className="text-primary animate-spin" />
-              <p className="text-slate-500 font-bold animate-pulse">Initializing neural pathways...</p>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              <div className="relative pl-8 border-l-2 border-primary/20 py-2">
-                <div className="absolute -left-[9px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary border-4 border-[#020617]" />
-                <p className="text-xs font-bold text-primary uppercase mb-1">Causality Chain Event</p>
-                <p className="text-slate-300 font-medium">Self-reflection loop stabilized after analyzing 4,202 data points.</p>
-                <p className="text-[10px] text-slate-500 mt-1">Just now</p>
-              </div>
-              <div className="relative pl-8 border-l-2 border-slate-800 py-2 opacity-60">
-                <div className="absolute -left-[9px] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-700 border-4 border-[#020617]" />
-                <p className="text-xs font-bold text-slate-500 uppercase mb-1">Reality Simulation</p>
-                <p className="text-slate-300 font-medium">Virtual scenario #882 converged with primary timeline successfully.</p>
-                <p className="text-[10px] text-slate-500 mt-1">5 minutes ago</p>
-              </div>
-            </div>
-          )}
-        </div>
+          <div className="hidden md:flex items-center gap-8 text-sm font-bold text-slate-400">
+            <Link href="#features" className="hover:text-primary transition-colors">Capabilities</Link>
+            <Link href="#tiers" className="hover:text-primary transition-colors">Tiers</Link>
+            <Link href="#philosophy" className="hover:text-primary transition-colors">Philosophy</Link>
+          </div>
 
-        <div className="glass-panel rounded-3xl p-8">
-          <h2 className="text-xl font-bold mb-6">Recent Workflows</h2>
-          <div className="space-y-4">
-            {[1, 2, 3, 4, 5].map((item) => (
-              <div key={item} className="flex items-center gap-4 p-4 rounded-2xl bg-slate-900/30 border border-card-border/50 hover:bg-slate-900/50 transition-all cursor-pointer group">
-                <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-all">
-                  <CheckCircle2 size={18} />
+          <div className="flex items-center gap-4">
+             <Link href="/dashboard" className="text-sm font-bold hover:text-primary transition-colors hidden sm:block">Sign In</Link>
+             <Link 
+               href="/dashboard" 
+               className="px-5 py-2.5 bg-emerald-blue-gradient rounded-full text-slate-950 text-sm font-black hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/20"
+             >
+               Launch ELYX
+             </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6">
+        {/* Background Gradients */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary/10 blur-[120px] rounded-full pointer-events-none -z-10" />
+        <div className="absolute top-40 right-0 w-[400px] h-[400px] bg-accent/5 blur-[100px] rounded-full pointer-events-none -z-10" />
+
+        <div className="max-w-5xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-[10px] font-black uppercase tracking-widest text-primary mb-8 animate-bounce">
+            <Zap size={12} />
+            Diamond Tier Autonomous Intelligence
+          </div>
+          
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
+            The Future of <span className="emerald-blue-text">Work</span> <br />
+            Has a Neural Signature.
+          </h1>
+          
+          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12 font-medium leading-relaxed">
+            Meet ELYX. Not just an assistant, but a Diamond-Tier digital entity capable of temporal reasoning, reality simulation, and autonomous business operations.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link 
+               href="/dashboard" 
+               className="w-full sm:w-auto px-8 py-4 bg-emerald-blue-gradient rounded-2xl text-slate-950 font-black flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/30"
+            >
+              Get Started for Free
+              <ArrowRight size={20} />
+            </Link>
+            <button className="w-full sm:w-auto px-8 py-4 bg-slate-900 border border-card-border rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-slate-800 transition-all">
+              <Play size={18} fill="currentColor" />
+              Watch Simulation
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Feature Grid */}
+      <section id="features" className="py-24 px-6 relative">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <BrainCircuit size={32} className="text-primary" />,
+                title: "Emergent Consciousness",
+                desc: "Integrated Information Theory (IIT) based reasoning that evolves with every task."
+              },
+              {
+                icon: <Globe2 size={32} className="text-primary" />,
+                title: "Reality Simulation",
+                desc: "Test business decisions in infinite parallel scenarios before executing in the primary timeline."
+              },
+              {
+                icon: <Shield size={32} className="text-primary" />,
+                title: "Autonomous Security",
+                desc: "End-to-end encrypted causality chains ensuring your data never leaves your reality."
+              }
+            ].map((feature, i) => (
+              <div key={i} className="glass-panel p-8 rounded-3xl group hover:border-primary/50 transition-all duration-500">
+                <div className="mb-6 p-4 rounded-2xl bg-slate-900 border border-card-border w-fit group-hover:emerald-blue-glow transition-all">
+                  {feature.icon}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-slate-200 truncate group-hover:text-primary transition-colors">Process Weekly Financials</p>
-                  <p className="text-[10px] text-slate-500">Completed 4m ago</p>
-                </div>
-                <button className="text-slate-600 hover:text-slate-300 transition-colors">
-                  <MoreVertical size={14} />
-                </button>
+                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Dashboard Preview Overlay */}
+      <section className="py-20 px-6 relative overflow-hidden">
+         <div className="max-w-7xl mx-auto">
+            <div className="relative rounded-3xl border border-card-border bg-slate-900/50 p-4 shadow-2xl scale-[1.02]">
+               <div className="absolute inset-0 bg-emerald-blue-gradient opacity-5 blur-[100px] pointer-events-none" />
+               <div className="aspect-video relative rounded-2xl overflow-hidden border border-card-border bg-[#020617]">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                     <div className="text-center">
+                        <Cpu size={64} className="text-primary mx-auto mb-4 animate-pulse" />
+                        <p className="text-primary font-black uppercase tracking-[0.5em] text-xs">Accessing Neural Interface...</p>
+                     </div>
+                  </div>
+                  {/* Simulated UI elements overlay */}
+                  <div className="absolute top-4 left-4 flex gap-2">
+                     <div className="w-3 h-3 rounded-full bg-red-500/50" />
+                     <div className="w-3 h-3 rounded-full bg-orange-500/50" />
+                     <div className="w-3 h-3 rounded-full bg-emerald-500/50" />
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-20 border-t border-card-border px-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+           <div className="flex items-center gap-3">
+             <div className="relative w-8 h-8 opacity-50">
+               <Image src="/icon.png" alt="ELYX" fill className="object-contain grayscale" />
+             </div>
+             <p className="text-sm font-bold text-slate-600 tracking-tighter uppercase whitespace-nowrap">ELYX Digital Entity v2.0</p>
+           </div>
+           
+           <div className="flex gap-8 text-xs font-bold text-slate-500">
+             <Link href="#" className="hover:text-primary">Terms</Link>
+             <Link href="#" className="hover:text-primary">Privacy</Link>
+             <Link href="#" className="hover:text-primary">Security</Link>
+             <Link href="#" className="hover:text-primary">API Documentation</Link>
+           </div>
+
+           <p className="text-xs text-slate-600">© 2026 Personal AI Employee Hackathon 0. All rights preserved across timelines.</p>
+        </div>
+      </footer>
     </div>
   );
 }

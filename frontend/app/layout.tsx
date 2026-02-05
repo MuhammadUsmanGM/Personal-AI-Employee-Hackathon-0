@@ -32,11 +32,9 @@ export default function RootLayout({
         <link rel="icon" href="/icon.png" sizes="any" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased text-slate-50`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased text-slate-50 bg-[#020617]`}
       >
-        <DashboardLayout>
-          {children}
-        </DashboardLayout>
+        {children}
       </body>
     </html>
   );
