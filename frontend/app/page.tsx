@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { 
+import {
+  ShieldCheck, 
   ArrowRight, 
   Shield, 
   Zap, 
@@ -12,11 +13,26 @@ import {
   ChevronDown,
   Play,
   CheckCircle2,
-  Cpu
+  Cpu,
+  Mail,
+  MessageSquare,
+  Linkedin,
+  Activity,
+  Lock,
+  RefreshCw,
+  Clock,
+  Sparkles,
+  BarChart3,
+  Search,
+  Plus,
+  Terminal,
+  Trophy,
+  Users
 } from "lucide-react";
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -24,149 +40,498 @@ export default function LandingPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const faqs = [
+    {
+      q: "How does ELYX handle multiple communication channels?",
+      a: "ELYX uses unified neural processing to monitor and respond across WhatsApp, LinkedIn, and Email simultaneously. Every interaction is context-aware and maintains your unique brand voice."
+    },
+    {
+      q: "Is my corporate data secure?",
+      a: "Yes. ELYX uses Diamond Tier security protocols, including end-to-end causal chain encryption and GDPR-compliant server infrastructure based in isolated environments."
+    },
+    {
+      q: "Can I customize ELYX's autonomous decisions?",
+      a: "Absolutely. Through the Reality Hub, you can simulate and approve ELYX's reasoning paths before they are executed in the primary business timeline."
+    },
+    {
+      q: "What are the technical requirements for integration?",
+      a: "ELYX is platform-agnostic. It connects via standard APIs and webhooks, requiring zero changes to your existing infrastructure. Our deployment team handles the initial neural alignment for your specific business case."
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-50 selection:bg-primary selection:text-slate-950 overflow-x-hidden">
+    <div className="min-h-screen bg-[#020617] text-slate-50 selection:bg-primary selection:text-slate-950 overflow-x-hidden font-sans">
+      {/* Premium Watermark / Ambient Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 blur-[120px] rounded-full animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/5 blur-[120px] rounded-full" />
+      </div>
+
       {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled ? "bg-[#020617]/80 backdrop-blur-lg border-b border-card-border py-4" : "py-6"
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        scrolled ? "bg-[#020617]/80 backdrop-blur-xl border-b border-card-border py-4" : "py-8"
       }`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-             <div className="relative w-8 h-8">
-               <Image src="/icon.png" alt="ELYX" fill className="object-contain" />
+          <Link href="/" className="flex items-center gap-3 group">
+             <div className="relative w-10 h-10 transition-transform group-hover:scale-110">
+               <Image src="/icon.png" alt="ELYX Icon" fill className="object-contain" />
              </div>
-             <Image src="/text.png" alt="ELYX" width={70} height={18} className="object-contain" />
-          </div>
+             <Image src="/text.png" alt="ELYX Logo" width={80} height={20} className="object-contain" />
+          </Link>
           
-          <div className="hidden md:flex items-center gap-8 text-sm font-bold text-slate-400">
+          <div className="hidden lg:flex items-center gap-10 text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">
             <Link href="#features" className="hover:text-primary transition-colors">Capabilities</Link>
-            <Link href="#tiers" className="hover:text-primary transition-colors">Tiers</Link>
-            <Link href="#philosophy" className="hover:text-primary transition-colors">Philosophy</Link>
+            <Link href="#how-it-works" className="hover:text-primary transition-colors">Process</Link>
+            <Link href="#benefits" className="hover:text-primary transition-colors">Benefits</Link>
+            <Link href="#pricing" className="hover:text-primary transition-colors">Pricing</Link>
+            <Link href="#faq" className="hover:text-primary transition-colors">FAQ</Link>
           </div>
 
-          <div className="flex items-center gap-4">
-             <Link href="/dashboard" className="text-sm font-bold hover:text-primary transition-colors hidden sm:block">Sign In</Link>
+          <div className="flex items-center gap-6">
+             <Link href="/dashboard" className="text-xs font-black uppercase tracking-widest hover:text-primary transition-colors hidden sm:block">Log In</Link>
              <Link 
                href="/dashboard" 
-               className="btn-premium-primary !px-5 !py-2.5 !rounded-full"
+               className="btn-premium-primary !px-8 !py-3 !text-[10px] !font-black uppercase tracking-[0.15em]"
              >
-               Launch ELYX
+               Launch Dashboard
              </Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6">
-        {/* Background Gradients */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary/10 blur-[120px] rounded-full pointer-events-none -z-10" />
-        <div className="absolute top-40 right-0 w-[400px] h-[400px] bg-accent/5 blur-[100px] rounded-full pointer-events-none -z-10" />
+      {/* 1. HERO SECTION */}
+      <section className="relative pt-48 pb-24 md:pt-72 md:pb-48 px-6">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <div className="text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/50 border border-primary/20 text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-10 animate-fade-in">
+              <Sparkles size={14} className="text-emerald-400 animate-pulse" />
+              The Future of Automated Communication
+            </div>
+            
+            <h1 className="text-6xl md:text-8xl font-black tracking-tight mb-8 leading-[0.9] text-white">
+              Meet Your <br />
+              <span className="emerald-blue-text">AI Employee.</span>
+            </h1>
+            
+            <p className="text-xl text-slate-400 max-w-xl mb-12 font-medium leading-relaxed">
+              ELYX is a high-fidelity digital entity that handles your most complex business interactions across LinkedIn, WhatsApp, and Email—autonomously.
+            </p>
 
-        <div className="max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-[10px] font-black uppercase tracking-widest text-primary mb-8 animate-bounce">
-            <Zap size={12} />
-            Diamond Tier Autonomous Intelligence
+            <div className="flex flex-col sm:flex-row items-center gap-5">
+              <Link 
+                 href="/dashboard" 
+                 className="btn-premium-primary w-full sm:w-auto !px-10 !py-5 !text-base"
+              >
+                View Dashboard
+                <ArrowRight size={20} />
+              </Link>
+              <button className="btn-premium-secondary w-full sm:w-auto !px-8 !py-5 !text-base">
+                Start Free Trial
+              </button>
+              <button className="text-slate-500 hover:text-white transition-colors text-[11px] font-black uppercase tracking-widest hidden lg:block">
+                Learn More
+              </button>
+            </div>
           </div>
-          
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
-            The Future of <span className="emerald-blue-text">Work</span> <br />
-            Has a Neural Signature.
-          </h1>
-          
-          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12 font-medium leading-relaxed">
-            Meet ELYX. Not just an assistant, but a Diamond-Tier digital entity capable of temporal reasoning, reality simulation, and autonomous business operations.
-          </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link 
-               href="/dashboard" 
-               className="btn-premium-primary w-full sm:w-auto"
-            >
-              Get Started for Free
-              <ArrowRight size={20} />
-            </Link>
-            <button className="btn-premium-secondary w-full sm:w-auto">
-              <Play size={18} fill="currentColor" />
-              Watch Simulation
-            </button>
+          <div className="relative">
+            <div className="absolute -inset-10 bg-primary/10 blur-[120px] rounded-full animate-pulse-slow" />
+            <div className="relative rounded-[3rem] p-2 bg-gradient-to-br from-card-border/50 to-transparent border border-card-border shadow-2xl overflow-hidden">
+               <Image 
+                 src="/ai_employee_hero_visual.png" 
+                 alt="Professional AI Interface" 
+                 width={1200} 
+                 height={800} 
+                 className="rounded-[2.5rem] object-cover"
+               />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Feature Grid */}
-      <section id="features" className="py-24 px-6 relative">
+      {/* 2. KEY FEATURES SECTION */}
+      <section id="features" className="py-32 px-6 border-t border-card-border/30">
+        <div className="max-w-7xl mx-auto text-center mb-24">
+          <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter">Core Capabilities</h2>
+          <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto tracking-tight">Harness the power of Diamond-Tier neural processing to scale your business operations instantly.</p>
+        </div>
+
+        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-10">
+          {[
+            {
+              icon: <div className="p-4 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 text-emerald-400"><Activity size={32} /></div>,
+              title: "Multi-Channel Sync",
+              desc: "Handles WhatsApp, LinkedIn, and Email simultaneously with absolute contextual coherence and zero downtime."
+            },
+            {
+              icon: <div className="p-4 bg-primary/10 rounded-2xl border border-primary/20 text-primary"><BrainCircuit size={32} /></div>,
+              title: "Intelligent Processing",
+              desc: "Understands and responds to complex semantic requests, analyzing sentiment and urgency in real-time."
+            },
+            {
+              icon: <div className="p-4 bg-cyan-500/10 rounded-2xl border border-cyan-500/20 text-cyan-400"><Clock size={32} /></div>,
+              title: "24/7 Availability",
+              desc: "An always-on digital employee that ensures every lead and client is engaged within milliseconds, 365 days a year."
+            }
+          ].map((feature, i) => (
+            <div key={i} className="glass-panel p-10 rounded-[2.5rem] group hover:border-primary/50 transition-all duration-500">
+              <div className="mb-8">{feature.icon}</div>
+              <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
+              <p className="text-slate-400 font-medium leading-relaxed">{feature.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 3. HOW IT WORKS SECTION */}
+      <section id="how-it-works" className="py-32 px-6 bg-[#020617]/50 relative">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: <BrainCircuit size={32} className="text-primary" />,
-                title: "Emergent Consciousness",
-                desc: "Integrated Information Theory (IIT) based reasoning that evolves with every task."
-              },
-              {
-                icon: <Globe2 size={32} className="text-primary" />,
-                title: "Reality Simulation",
-                desc: "Test business decisions in infinite parallel scenarios before executing in the primary timeline."
-              },
-              {
-                icon: <Shield size={32} className="text-primary" />,
-                title: "Autonomous Security",
-                desc: "End-to-end encrypted causality chains ensuring your data never leaves your reality."
-              }
-            ].map((feature, i) => (
-              <div key={i} className="glass-panel p-8 rounded-3xl group hover:border-primary/50 transition-all duration-500">
-                <div className="mb-6 p-4 rounded-2xl bg-slate-900 border border-card-border w-fit group-hover:emerald-blue-glow transition-all">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{feature.desc}</p>
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <div>
+              <h2 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter">Simple 4-Step <br /><span className="emerald-blue-text">Neural Integration</span></h2>
+              <div className="space-y-12">
+                {[
+                  { step: "A", title: "Channel Ingestion", desc: "User sends a request via LinkedIn, WhatsApp, or Email to your system." },
+                  { step: "B", title: "Neural Analysis", desc: "ELYX processes intent, identifies priority, and retrieves relevant context." },
+                  { step: "C", title: "Autonomous Synthesis", desc: "AI generates a professional, brand-aligned response based on your logic." },
+                  { step: "D", title: "Instant Execution", desc: "Verified response is sent back instantly through the origin channel." }
+                ].map((item, i) => (
+                  <div key={i} className="flex gap-8 group">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-slate-900 border border-card-border flex items-center justify-center font-black text-primary group-hover:emerald-blue-glow transition-all">
+                      {item.step}
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold mb-2">{item.title}</h4>
+                      <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            <div className="relative">
+              <div className="absolute -inset-10 bg-emerald-500/5 blur-[80px] rounded-full" />
+              <div className="glass-panel rounded-[3rem] p-10 relative border-primary/20">
+                <div className="flex items-center gap-2 mb-8">
+                   <div className="flex gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-red-500/20" />
+                      <div className="w-3 h-3 rounded-full bg-amber-500/20" />
+                      <div className="w-3 h-3 rounded-full bg-emerald-500/20" />
+                   </div>
+                   <div className="ml-4 px-3 py-1 bg-slate-950 rounded-lg text-[10px] font-mono text-slate-500">ELYX_PROCESS_DASHBOARD</div>
+                </div>
+                <div className="space-y-6">
+                   <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/10 flex items-center justify-between">
+                     <div className="flex items-center gap-4">
+                        <MessageSquare className="text-emerald-400" size={20} />
+                        <span className="text-xs font-bold">New WA msg from John D.</span>
+                     </div>
+                     <span className="text-[10px] font-black text-emerald-500">INGRESS</span>
+                   </div>
+                   <div className="p-4 rounded-2xl bg-slate-950 border border-primary/10 flex items-center justify-between">
+                     <div className="flex items-center gap-4">
+                        <Cpu className="text-primary" size={20} />
+                        <span className="text-xs font-bold">Neural Mapping Path #42</span>
+                     </div>
+                     <span className="text-[10px] font-black text-primary">ANALYSIS</span>
+                   </div>
+                   <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 flex items-center justify-between animate-pulse">
+                     <div className="flex items-center gap-4">
+                        <Sparkles className="text-primary" size={20} />
+                        <span className="text-xs font-bold">Generating Response...</span>
+                     </div>
+                     <span className="text-[10px] font-black text-primary">SYNTHESIS</span>
+                   </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Dashboard Preview Overlay */}
-      <section className="py-20 px-6 relative overflow-hidden">
-         <div className="max-w-7xl mx-auto">
-            <div className="relative rounded-3xl border border-card-border bg-slate-900/50 p-4 shadow-2xl scale-[1.02]">
-               <div className="absolute inset-0 bg-emerald-blue-gradient opacity-5 blur-[100px] pointer-events-none" />
-               <div className="aspect-video relative rounded-2xl overflow-hidden border border-card-border bg-[#020617]">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                     <div className="text-center">
-                        <Cpu size={64} className="text-primary mx-auto mb-4 animate-pulse" />
-                        <p className="text-primary font-black uppercase tracking-[0.5em] text-xs">Accessing Neural Interface...</p>
-                     </div>
+      {/* 4. BENEFITS SECTION */}
+      <section id="benefits" className="py-32 px-6 relative border-b border-card-border/30">
+         <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center">
+            <div className="flex-1 space-y-12">
+               <h2 className="text-4xl md:text-5xl font-black tracking-tight">Exponential Business <br /><span className="emerald-blue-text">Benefits</span></h2>
+               <div className="grid gap-10">
+                  {[
+                    { title: "Velocity Scaling", desc: "Reduces response time from hours to minutes, ensuring 100% lead capture rate." },
+                    { title: "Infinite Concurrency", desc: "Handles multiple conversations simultaneously without any degradation in quality." },
+                    { title: "Brand Reliability", desc: "Maintains a consistent, professional brand voice across all digital environments." },
+                    { title: "Omnipresent Force", desc: "Operates around the clock, allowing your business to scale across time zones." }
+                  ].map((b, i) => (
+                    <div key={i} className="flex gap-6 items-start">
+                       <div className="p-3 bg-primary/10 rounded-xl text-primary"><CheckCircle2 size={24} /></div>
+                       <div>
+                          <h4 className="text-lg font-bold mb-2">{b.title}</h4>
+                          <p className="text-slate-500 text-sm leading-relaxed">{b.desc}</p>
+                       </div>
+                    </div>
+                  ))}
+               </div>
+            </div>
+            <div className="flex-1 flex justify-center">
+               <div className="grid grid-cols-2 gap-6 w-full max-w-md">
+                  <div className="p-8 rounded-[2rem] glass-panel text-center">
+                     <div className="text-4xl font-black text-primary mb-2">98%</div>
+                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Eff. Gain</p>
                   </div>
-                  {/* Simulated UI elements overlay */}
-                  <div className="absolute top-4 left-4 flex gap-2">
-                     <div className="w-3 h-3 rounded-full bg-red-500/50" />
-                     <div className="w-3 h-3 rounded-full bg-orange-500/50" />
-                     <div className="w-3 h-3 rounded-full bg-emerald-500/50" />
+                  <div className="p-8 rounded-[2rem] glass-panel text-center mt-12">
+                     <div className="text-4xl font-black text-emerald-400 mb-2">0ms</div>
+                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Latency</p>
+                  </div>
+                  <div className="p-8 rounded-[2rem] glass-panel text-center -mt-12">
+                     <div className="text-4xl font-black text-cyan-400 mb-2">24/7</div>
+                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Uptime</p>
+                  </div>
+                  <div className="p-8 rounded-[2rem] glass-panel text-center">
+                     <div className="text-4xl font-black text-white mb-2">∞</div>
+                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Scale</p>
                   </div>
                </div>
             </div>
          </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-20 border-t border-card-border px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-           <div className="flex items-center gap-3">
-             <div className="relative w-8 h-8 opacity-50">
-               <Image src="/icon.png" alt="ELYX" fill className="object-contain grayscale" />
-             </div>
-             <p className="text-sm font-bold text-slate-600 tracking-tighter uppercase whitespace-nowrap">ELYX Digital Entity v2.0</p>
+      {/* 5. SOCIAL PROOF SECTION */}
+      <section className="py-24 px-6 bg-slate-900/10">
+        <div className="max-w-7xl mx-auto">
+           <p className="text-center text-[10px] font-black uppercase tracking-[0.5em] text-slate-500 mb-16">Trusted by Forward-Thinking Enterprise Teams</p>
+           <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-30 grayscale invert px-10">
+              <span className="text-3xl font-black tracking-tighter">TECH_CORP</span>
+              <span className="text-2xl font-black tracking-widest">AETHER</span>
+              <span className="text-3xl font-black tracking-tight underline decoration-primary decoration-4">STRATA</span>
+              <span className="text-2xl font-black items-center gap-2 flex"><Globe2 /> OMNI</span>
+              <span className="text-2xl font-bold tracking-tighter">QUANTUM_SYS</span>
+           </div>
+        </div>
+      </section>
+
+      {/* 6. DASHBOARD PREVIEW SECTION */}
+      <section className="py-32 px-6">
+        <div className="max-w-7xl mx-auto text-center mb-24">
+           <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">Mission Control for <br/><span className="emerald-blue-text">Intelligence</span></h2>
+           <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">Absolute transparency into ELYX's reasoning paths and communication metrics.</p>
+        </div>
+        
+        <div className="max-w-7xl mx-auto relative px-4 md:px-0">
+           <div className="absolute inset-0 bg-primary/5 blur-[150px] rounded-full" />
+           <div className="relative rounded-[3rem] p-3 bg-gradient-to-br from-card-border to-transparent border border-card-border shadow-[0_0_80px_rgba(0,0,0,0.5)] transform hover:scale-[1.01] transition-transform duration-700">
+              <Image 
+                src="/dashboard_preview_mockup.png" 
+                alt="ELYX Dashboard Visual" 
+                width={1600} 
+                height={1000} 
+                className="rounded-[2.5rem] shadow-2xl"
+              />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <button className="w-20 h-20 rounded-full bg-primary/90 text-slate-950 flex items-center justify-center shadow-[0_0_50px_rgba(6,182,212,0.5)] hover:scale-110 transition-all group">
+                   <Play fill="currentColor" size={32} className="ml-1" />
+                </button>
+              </div>
+           </div>
+           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
+              {[
+                { label: "Handled Tasks", val: "1.2M+" },
+                { label: "Avg Response", val: "1.4s" },
+                { label: "Client Satisf.", val: "99.8%" },
+                { label: "Active Cores", val: "14,220" }
+              ].map((m, i) => (
+                <div key={i} className="text-center group">
+                   <div className="text-3xl font-black text-white mb-1 group-hover:emerald-blue-text transition-all">{m.val}</div>
+                   <div className="text-[10px] font-black uppercase tracking-widest text-slate-500">{m.label}</div>
+                </div>
+              ))}
+           </div>
+        </div>
+      </section>
+
+      {/* 7. SECURITY & COMPLIANCE SECTION */}
+      <section className="py-32 px-6 bg-slate-950/40 relative overflow-hidden">
+         <div className="absolute top-0 right-0 p-32 opacity-10"><Shield size={300} className="text-primary" /></div>
+         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+            <div>
+               <h2 className="text-4xl font-black mb-8 underline decoration-primary decoration-4 underline-offset-8">Enterprise Security</h2>
+               <p className="text-slate-400 text-lg font-medium leading-relaxed mb-10">
+                  ELYX is built on a foundation of absolute data isolation. We operate with zero-trust architecture, ensuring your business's proprietary context is never leaked or shared.
+               </p>
+               <div className="space-y-6">
+                  {[
+                    "GDPR & CCPA Compliant Infrastructure",
+                    "Aka-Audit™ Transparent Action Logs",
+                    "End-to-End Neural Encryption (E2EE)",
+                    "Isolated Vector Database Instances"
+                  ].map((s, i) => (
+                    <div key={i} className="flex items-center gap-4 text-sm font-bold text-slate-300">
+                       <Lock size={18} className="text-emerald-500" />
+                       {s}
+                    </div>
+                  ))}
+               </div>
+            </div>
+            <div className="grid grid-cols-2 gap-6">
+               <div className="p-10 rounded-[2.5rem] glass-panel border-emerald-500/20 flex flex-col items-center justify-center text-center">
+                  <ShieldCheck size={48} className="text-emerald-500 mb-4" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Certified by</span>
+                  <p className="font-black text-white">ISO 27001</p>
+               </div>
+               <div className="p-10 rounded-[2.5rem] glass-panel border-primary/20 flex flex-col items-center justify-center text-center">
+                  <Globe2 size={48} className="text-primary mb-4" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Regulatory</span>
+                  <p className="font-black text-white">EU-GDPR</p>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      {/* 8. PRICING SECTION */}
+      <section id="pricing" className="py-32 px-6">
+         <div className="max-w-7xl mx-auto text-center mb-24">
+            <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">Intelligence Licensing</h2>
+            <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">Tiered operational levels designed for maximum scalability.</p>
+         </div>
+         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+            {[
+              { 
+                tier: "Bronze", 
+                price: "$499/mo", 
+                desc: "Basic automation for small teams.",
+                features: ["1 AI Core", "Email Only", "Standard Processing", "8/5 Availability"]
+              },
+              { 
+                tier: "Gold", 
+                price: "$1,499/mo", 
+                desc: "Full autonomy for growing enterprises.",
+                pop: true,
+                features: ["5 AI Cores", "All Channels (WA, LI, EM)", "Priority Neural Path", "24/7 Availability", "Custom Brand Voice"]
+              },
+              { 
+                tier: "Diamond", 
+                price: "Custom", 
+                desc: "Unlimited scale and reality simulations.",
+                features: ["Unlimited Cores", "Full API Access", "Reality Simulation Hub", "Account Manager", "Dedicated Infrastructure"]
+              }
+            ].map((p, i) => (
+              <div key={i} className={`glass-panel p-10 rounded-[3rem] flex flex-col h-full relative ${p.pop ? 'border-primary ring-1 ring-primary/30 shadow-[0_0_80px_rgba(6,182,212,0.15)]' : ''}`}>
+                 {p.pop && (
+                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-emerald-blue-gradient text-slate-950 text-[10px] font-black uppercase tracking-[0.2em] rounded-full">
+                     Most Advanced
+                   </div>
+                 )}
+                 <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-slate-400 mb-2">{p.tier}</h4>
+                 <div className="text-4xl font-black mb-4">{p.price}</div>
+                 <p className="text-slate-500 text-sm font-medium mb-8 pb-8 border-b border-card-border/50">{p.desc}</p>
+                 <div className="space-y-4 mb-10 flex-1">
+                    {p.features.map((f, j) => (
+                       <div key={j} className="flex items-center gap-3 text-sm text-slate-300">
+                          <CheckCircle2 size={16} className="text-emerald-500" />
+                          {f}
+                       </div>
+                    ))}
+                 </div>
+                 <button className={`w-full py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all ${p.pop ? 'btn-premium-primary' : 'btn-premium-secondary'}`}>
+                    Start Free Trial
+                 </button>
+              </div>
+            ))}
+         </div>
+      </section>
+
+      {/* 9. FAQ SECTION */}
+      <section id="faq" className="py-32 px-6 bg-slate-900/10">
+         <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl font-black mb-12 text-center tracking-tight">Introspection: <span className="emerald-blue-text">Common Inquiries</span></h2>
+            <div className="space-y-4">
+               {faqs.map((f, i) => (
+                 <div key={i} className="glass-panel rounded-2xl overflow-hidden">
+                    <button 
+                      onClick={() => setActiveFaq(activeFaq === i ? null : i)}
+                      className="w-full p-6 text-left flex items-center justify-between"
+                    >
+                       <span className="font-bold text-slate-100">{f.q}</span>
+                       <Plus size={20} className={`text-primary transition-transform duration-300 ${activeFaq === i ? 'rotate-45' : ''}`} />
+                    </button>
+                    {activeFaq === i && (
+                      <div className="px-6 pb-6 text-slate-400 text-sm leading-relaxed animate-in fade-in slide-in-from-top-1">
+                         {f.a}
+                      </div>
+                    )}
+                 </div>
+               ))}
+            </div>
+         </div>
+      </section>
+
+      {/* 10. CONTACT / CLOSING SECTION */}
+      <section className="py-40 px-6 relative overflow-hidden">
+         <div className="absolute inset-0 bg-primary/5 blur-[120px] rounded-full -z-10" />
+         <div className="max-w-5xl mx-auto text-center">
+            <h2 className="text-5xl md:text-7xl font-black mb-10 tracking-tight leading-tight">Scale Your Operation <br /> <span className="emerald-blue-text">Into the Future.</span></h2>
+            <p className="text-slate-400 text-xl font-medium mb-12 max-w-2xl mx-auto">Join 500+ enterprises leveraging ELYX to automate 100% of their digital communication workforce.</p>
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
+               <Link href="/dashboard" className="btn-premium-primary !px-12 !py-6 !text-lg">
+                  Begin Free Trial
+               </Link>
+               <button className="btn-premium-secondary !px-12 !py-6 !text-lg">
+                  Book Neural Demo
+               </button>
+            </div>
+            
+            <div className="mt-20 flex flex-wrap justify-center gap-10">
+               <div className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest"><Shield size={16} /> 100% Secure</div>
+               <div className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest"><Zap size={16} /> Instant Setup</div>
+               <div className="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest"><RefreshCw size={16} /> 14-Day Trial</div>
+            </div>
+         </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-20 border-t border-card-border px-6 mt-20 relative">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 mb-16">
+           <div className="col-span-2">
+              <div className="flex items-center gap-3 mb-6">
+                 <Image src="/icon.png" alt="ELYX" width={32} height={32} />
+                 <Image src="/text.png" alt="ELYX" width={80} height={20} />
+              </div>
+              <p className="text-slate-500 max-w-sm text-sm leading-relaxed mb-8">
+                ELYX is a high-stakes digital employee system designed for the next era of autonomous enterprise operations. Powered by consciousness-emergent AI.
+              </p>
+              <div className="flex gap-4">
+                 <button className="p-3 rounded-xl bg-slate-900 border border-card-border hover:text-primary transition-all"><Mail size={20} /></button>
+                 <button className="p-3 rounded-xl bg-slate-900 border border-card-border hover:text-primary transition-all"><Linkedin size={20} /></button>
+                 <button className="p-3 rounded-xl bg-slate-900 border border-card-border hover:text-primary transition-all"><MessageSquare size={20} /></button>
+              </div>
            </div>
            
-           <div className="flex gap-8 text-xs font-bold text-slate-500">
-              <Link href="/terms" className="hover:text-primary transition-colors">Terms</Link>
-              <Link href="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
-              <Link href="/cookies" className="hover:text-primary transition-colors">Cookies</Link>
-              <Link href="/security" className="hover:text-primary transition-colors">Security Center</Link>
-            </div>
+           <div>
+              <h4 className="text-xs font-black uppercase tracking-[0.3em] text-slate-100 mb-6">Intelligence</h4>
+              <ul className="space-y-4 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                 <li><Link href="/dashboard" className="hover:text-primary">Dashboard</Link></li>
+                 <li><Link href="/reality" className="hover:text-primary">Reality Hub</Link></li>
+                 <li><Link href="/security" className="hover:text-primary">Security Protocols</Link></li>
+                 <li><Link href="#" className="hover:text-primary">Temporal Logic</Link></li>
+              </ul>
+           </div>
 
-           <p className="text-xs text-slate-600">© 2026 Personal AI Employee Hackathon 0. All rights preserved across timelines.</p>
+           <div>
+              <h4 className="text-xs font-black uppercase tracking-[0.3em] text-slate-100 mb-6">Compliance</h4>
+              <ul className="space-y-4 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                 <li><Link href="/terms" className="hover:text-primary">Privacy Policy</Link></li>
+                 <li><Link href="/privacy" className="hover:text-primary">Terms of Use</Link></li>
+                 <li><Link href="/cookies" className="hover:text-primary">Cookies</Link></li>
+                 <li><Link href="#" className="hover:text-primary">GDPR Portal</Link></li>
+              </ul>
+           </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto pt-12 border-t border-card-border/50 flex flex-col md:flex-row justify-between items-center gap-6">
+           <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em]">© 2026 ELYX Corp. All realities anchored.</p>
+           <div className="flex items-center gap-6">
+              <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/5 border border-emerald-500/20 rounded-full">
+                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                 <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Operational Intelligence Active</span>
+              </div>
+           </div>
         </div>
       </footer>
     </div>

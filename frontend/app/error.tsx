@@ -19,11 +19,12 @@ export default function Error({
 
   return (
     <div className="min-h-screen bg-[#020617] flex flex-col items-center justify-center relative overflow-hidden px-6">
-      {/* Sharpened Background "ERROR" Text */}
+      {/* Sharpened Background "ERROR" Text with High Glow */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden z-0">
-        <h1 className="text-[25vw] md:text-[35vw] font-black leading-none opacity-30 text-red-500/50" 
+        <h1 className="text-[25vw] font-black leading-none opacity-40 text-red-500 animate-pulse-slow text-center w-full" 
             style={{ 
-              filter: 'drop-shadow(0 0 30px rgba(239, 68, 68, 0.3))'
+              filter: 'drop-shadow(0 0 50px rgba(239, 68, 68, 0.6))',
+              color: 'rgba(239, 68, 68, 0.5)'
             }}>
           ERROR
         </h1>
@@ -62,7 +63,7 @@ export default function Error({
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <button 
             onClick={() => reset()}
-            className="px-8 py-4 bg-emerald-blue-gradient rounded-2xl font-black text-[#020617] flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(79,209,243,0.3)] group"
+            className="btn-premium-primary !bg-red-500 !shadow-red-500/20 !text-slate-950"
           >
             <RefreshCcw size={20} className="group-hover:rotate-180 transition-transform duration-500" />
             Synchronize Core (Retry)
@@ -70,7 +71,7 @@ export default function Error({
           
           <Link 
             href="/"
-            className="px-8 py-4 bg-slate-900/50 backdrop-blur-md border border-slate-700/50 rounded-2xl font-bold text-slate-300 flex items-center justify-center gap-3 hover:bg-slate-800 transition-all active:scale-95"
+            className="btn-premium-secondary"
           >
             <Home size={20} />
             Safe Point Rebound
