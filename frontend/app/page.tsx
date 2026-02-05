@@ -60,7 +60,7 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-50 selection:bg-primary selection:text-slate-950 overflow-x-hidden font-sans">
+    <div className="min-h-screen bg-[#020617] text-slate-50 overflow-x-hidden font-sans">
       {/* Premium Watermark / Ambient Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 blur-[120px] rounded-full animate-pulse" />
@@ -272,19 +272,19 @@ export default function LandingPage() {
             </div>
             <div className="flex-1 flex justify-center">
                <div className="grid grid-cols-2 gap-6 w-full max-w-md">
-                  <div className="p-8 rounded-[2rem] glass-panel text-center">
+                  <div className="p-8 rounded-3xl glass-panel text-center hover:border-primary/50 transition-colors">
                      <div className="text-4xl font-black text-primary mb-2">98%</div>
                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Eff. Gain</p>
                   </div>
-                  <div className="p-8 rounded-[2rem] glass-panel text-center mt-12">
+                  <div className="p-8 rounded-3xl glass-panel text-center hover:border-emerald-500/50 transition-colors">
                      <div className="text-4xl font-black text-emerald-400 mb-2">0ms</div>
                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Latency</p>
                   </div>
-                  <div className="p-8 rounded-[2rem] glass-panel text-center -mt-12">
+                  <div className="p-8 rounded-3xl glass-panel text-center hover:border-cyan-500/50 transition-colors">
                      <div className="text-4xl font-black text-cyan-400 mb-2">24/7</div>
                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Uptime</p>
                   </div>
-                  <div className="p-8 rounded-[2rem] glass-panel text-center">
+                  <div className="p-8 rounded-3xl glass-panel text-center hover:border-white/50 transition-colors">
                      <div className="text-4xl font-black text-white mb-2">∞</div>
                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Scale</p>
                   </div>
@@ -308,24 +308,25 @@ export default function LandingPage() {
       </section>
 
       {/* 6. DASHBOARD PREVIEW SECTION */}
-      <section className="py-32 px-6">
-        <div className="max-w-7xl mx-auto text-center mb-24">
+      <section className="py-20 px-6">
+        <div className="max-w-7xl mx-auto text-center mb-16">
            <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">Mission Control for <br/><span className="emerald-blue-text">Intelligence</span></h2>
            <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">Absolute transparency into ELYX's reasoning paths and communication metrics.</p>
         </div>
         
-        <div className="max-w-7xl mx-auto relative px-4 md:px-0">
+        <div className="max-w-5xl mx-auto relative px-4 md:px-0">
            <div className="absolute inset-0 bg-primary/5 blur-[150px] rounded-full" />
-           <div className="relative rounded-[3rem] p-3 bg-gradient-to-br from-card-border to-transparent border border-card-border shadow-[0_0_80px_rgba(0,0,0,0.5)] transform hover:scale-[1.01] transition-transform duration-700">
-              <Image 
-                src="/dashboard_preview.png" 
-                alt="ELYX Dashboard Visual" 
-                width={1600} 
-                height={1000} 
-                className="rounded-[2.5rem] shadow-2xl"
-              />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <button className="w-20 h-20 rounded-full bg-primary/90 text-slate-950 flex items-center justify-center shadow-[0_0_50px_rgba(6,182,212,0.5)] hover:scale-110 transition-all group">
+           <div className="relative rounded-3xl p-2 bg-gradient-to-br from-card-border to-transparent border border-card-border shadow-[0_0_80px_rgba(0,0,0,0.5)] transform hover:scale-[1.01] transition-transform duration-700 overflow-hidden">
+              <div className="aspect-video relative w-full overflow-hidden rounded-2xl">
+                <Image 
+                  src="/dashboard_preview.png" 
+                  alt="ELYX Dashboard Visual" 
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <button className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-primary/90 text-slate-950 flex items-center justify-center shadow-[0_0_50px_rgba(6,182,212,0.5)] hover:scale-110 transition-all group z-10">
                    <Play fill="currentColor" size={32} className="ml-1" />
                 </button>
               </div>

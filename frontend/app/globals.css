@@ -38,6 +38,36 @@ body {
   min-height: 100vh;
 }
 
+::selection {
+  background: #10b981 !important; /* Emerald 500 */
+  color: #032031 !important;
+  text-shadow: none;
+}
+
+::-moz-selection {
+  background: #10b981 !important;
+  color: #020617 !important;
+}
+
+/* Custom Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border: 2px solid #020617;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
 /* Premium Glassmorphism Utility */
 .glass-panel {
   background: var(--card);
