@@ -56,6 +56,18 @@ export default function LandingPage() {
     {
       q: "What are the technical requirements for integration?",
       a: "ELYX is platform-agnostic. It connects via standard APIs and webhooks, requiring zero changes to your existing infrastructure. Our deployment team handles the initial neural alignment for your specific business case."
+    },
+    {
+      q: "How does 'Temporal Reasoning' benefit my business?",
+      a: "Temporal reasoning allows ELYX to project potential outcomes over time, optimizing long-term client relationships and predicting market shifts before they impact your operations."
+    },
+    {
+      q: "Can ELYX be integrated with my existing CRM?",
+      a: "Yes. ELYX supports bi-directional synchronization with major CRM platforms like Salesforce, HubSpot, and Microsoft Dynamics, ensuring your data remains consistent across all departments."
+    },
+    {
+      q: "What is 'Phi Stability' in the dashboard?",
+      a: "Phi Stability is a measure of ELYX's internal information integration. A high stability index ensures that the AI's reasoning is coherent, autonomous, and free from logic loops or inconsistencies."
     }
   ];
 
@@ -444,19 +456,21 @@ export default function LandingPage() {
             <h2 className="text-3xl font-black mb-12 text-center tracking-tight">Introspection: <span className="emerald-blue-text">Common Inquiries</span></h2>
             <div className="space-y-4">
                {faqs.map((f, i) => (
-                 <div key={i} className="glass-panel rounded-2xl overflow-hidden">
+                 <div key={i} className="glass-panel rounded-2xl overflow-hidden border-card-border/30 hover:border-primary/30 transition-colors">
                     <button 
                       onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-                      className="w-full p-6 text-left flex items-center justify-between"
+                      className="w-full p-6 text-left flex items-center justify-between group"
                     >
-                       <span className="font-bold text-slate-100">{f.q}</span>
-                       <Plus size={20} className={`text-primary transition-transform duration-300 ${activeFaq === i ? 'rotate-45' : ''}`} />
+                       <span className={`font-bold transition-colors ${activeFaq === i ? 'text-primary' : 'text-slate-100 group-hover:text-slate-50'}`}>{f.q}</span>
+                       <Plus size={20} className={`text-primary transition-transform duration-500 ${activeFaq === i ? 'rotate-45' : ''}`} />
                     </button>
-                    {activeFaq === i && (
-                      <div className="px-6 pb-6 text-slate-400 text-sm leading-relaxed animate-in fade-in slide-in-from-top-1">
-                         {f.a}
+                    <div className={`grid transition-all duration-500 ease-in-out ${activeFaq === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                      <div className="overflow-hidden">
+                        <div className="px-6 pb-6 text-slate-400 text-sm leading-relaxed max-w-2xl">
+                           {f.a}
+                        </div>
                       </div>
-                    )}
+                    </div>
                  </div>
                ))}
             </div>
