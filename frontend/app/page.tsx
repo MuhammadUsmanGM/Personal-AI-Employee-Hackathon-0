@@ -27,7 +27,8 @@ import {
   Plus,
   Terminal,
   Trophy,
-  Users
+  Users,
+  Github
 } from "lucide-react";
 
 export default function LandingPage() {
@@ -512,9 +513,15 @@ export default function LandingPage() {
                 ELYX is a high-stakes digital employee system designed for the next era of autonomous enterprise operations. Powered by consciousness-emergent AI.
               </p>
               <div className="flex gap-4">
-                 <button className="p-3 rounded-xl bg-slate-900 border border-card-border hover:text-primary transition-all"><Mail size={20} /></button>
-                 <button className="p-3 rounded-xl bg-slate-900 border border-card-border hover:text-primary transition-all"><Linkedin size={20} /></button>
-                 <button className="p-3 rounded-xl bg-slate-900 border border-card-border hover:text-primary transition-all"><MessageSquare size={20} /></button>
+                 <a href="https://github.com/MuhammadUsmanGM" target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-slate-900 border border-card-border hover:text-primary transition-all">
+                   <Github size={20} />
+                 </a>
+                 <a href="https://www.linkedin.com/in/muhammad-usman-ai-dev" target="_blank" rel="noopener noreferrer" className="p-3 rounded-xl bg-slate-900 border border-card-border hover:text-primary transition-all">
+                   <Linkedin size={20} />
+                 </a>
+                 <a href="mailto:mu.ai.dev@gmail.com" className="p-3 rounded-xl bg-slate-900 border border-card-border hover:text-primary transition-all">
+                   <Mail size={20} />
+                 </a>
               </div>
            </div>
            
