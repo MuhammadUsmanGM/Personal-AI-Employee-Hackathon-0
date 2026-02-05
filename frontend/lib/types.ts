@@ -88,3 +88,30 @@ export interface Communication {
   status: 'active' | 'archived' | 'needs_reply';
   history: Message[];
 }
+
+export interface Transaction {
+  id: string;
+  type: 'income' | 'expense';
+  amount: number;
+  category: string;
+  merchant: string;
+  date: string;
+  status: 'completed' | 'pending' | 'flagged';
+}
+
+export interface KPI {
+  label: string;
+  value: string;
+  change: number;
+  trend: 'up' | 'down' | 'neutral';
+}
+
+export interface BusinessWorkflow {
+  id: string;
+  name: string;
+  status: 'active' | 'paused' | 'completed';
+  efficiency: number;
+  steps_completed: number;
+  total_steps: number;
+  last_run: string;
+}

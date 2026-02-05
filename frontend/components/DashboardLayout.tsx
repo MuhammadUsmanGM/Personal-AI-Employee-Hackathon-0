@@ -33,6 +33,7 @@ export default function SidebarLayout({
   const sidebarItems = [
     { icon: <LayoutDashboard size={20} />, label: "Dashboard", href: "/" },
     { icon: <CheckCircle2 size={20} />, label: "Operations", href: "/operations" },
+    { icon: <Activity size={20} />, label: "Business", href: "/business" },
     { icon: <MessageSquare size={20} />, label: "Communications", href: "/comms" },
     { icon: <BrainCircuit size={20} />, label: "Consciousness", href: "/consciousness" },
     { icon: <Clock size={20} />, label: "Temporal", href: "/temporal" },

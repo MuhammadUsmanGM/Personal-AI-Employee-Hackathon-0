@@ -1,4 +1,4 @@
-import { DashboardData, ConsciousnessState, RealityStatus, Task, ApprovalRequest, Communication } from "./types";
+import { DashboardData, ConsciousnessState, RealityStatus, Task, ApprovalRequest, Communication, Transaction, KPI, BusinessWorkflow } from "./types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
@@ -120,4 +120,29 @@ export async function fetchCommunications(): Promise<Communication[]> {
       ]
     }
   ] as Communication[];
+}
+
+export async function fetchTransactions(): Promise<Transaction[]> {
+  return [
+    { id: "T1", type: "income", amount: 4500.00, category: "Services", merchant: "Client A", date: new Date().toISOString(), status: "completed" },
+    { id: "T2", type: "expense", amount: 120.50, category: "Software", merchant: "Vercel", date: new Date(Date.now() - 86400000).toISOString(), status: "completed" },
+    { id: "T3", type: "expense", amount: 2500.00, category: "Infrastructure", merchant: "AWS", date: new Date(Date.now() - 172800000).toISOString(), status: "pending" }
+  ] as Transaction[];
+}
+
+export async function fetchKPIs(): Promise<KPI[]> {
+  return [
+    { label: "Monthly Revenue", value: "$45,210", change: 12.5, trend: "up" },
+    { label: "Operating Efficiency", value: "94.2%", change: -2.1, trend: "down" },
+    { label: "New Leads", value: "142", change: 8.4, trend: "up" },
+    { label: "Churn Rate", value: "0.8%", change: 0, trend: "neutral" }
+  ] as KPI[];
+}
+
+export async function fetchWorkflows(): Promise<BusinessWorkflow[]> {
+  return [
+    { id: "WF1", name: "Weekly Financial Reconciliation", status: "active", efficiency: 98, steps_completed: 4, total_steps: 5, last_run: new Date().toISOString() },
+    { id: "WF2", name: "Client Onboarding Simulation", status: "completed", efficiency: 100, steps_completed: 12, total_steps: 12, last_run: new Date(Date.now() - 3600000).toISOString() },
+    { id: "WF3", name: "Social Media Sentiment Loop", status: "paused", efficiency: 82, steps_completed: 1, total_steps: 3, last_run: new Date(Date.now() - 7200000).toISOString() }
+  ] as BusinessWorkflow[];
 }
