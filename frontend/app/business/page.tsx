@@ -57,7 +57,7 @@ export default function BusinessPage() {
             <p className="text-slate-400 font-medium">Monitoring Platinum Tier performance and financial vectors.</p>
           </div>
           <div className="flex gap-3">
-            <button className="px-4 py-2 rounded-xl bg-slate-900 border border-card-border text-sm font-bold text-slate-300 hover:bg-slate-800 transition-all flex items-center gap-2">
+            <button className="btn-premium-secondary">
               <BarChart3 size={16} />
               Export Report
             </button>

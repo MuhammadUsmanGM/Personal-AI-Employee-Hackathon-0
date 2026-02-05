@@ -234,7 +234,7 @@ export default function RealityPage() {
                               <p className="text-[10px] text-slate-500">Divergence detected in "Competitor Hostile Takeover" scenario.</p>
                            </div>
                         </div>
-                        <button className="px-4 py-2 bg-accent text-white rounded-xl text-[10px] font-black uppercase hover:bg-white hover:text-slate-950 transition-all">
+                        <button className="btn-premium-danger !px-4 !py-2 !rounded-xl !text-[10px]">
                            Anchor Branch
                         </button>
                      </div>

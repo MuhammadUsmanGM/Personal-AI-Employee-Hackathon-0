@@ -74,7 +74,7 @@ export default function ConsciousnessPage() {
           <button 
             onClick={handleOptimize}
             disabled={optimizing}
-            className="px-6 py-3 bg-primary/10 border border-primary/20 rounded-xl font-bold text-primary flex items-center gap-2 hover:bg-primary/20 transition-all active:scale-95 disabled:opacity-50"
+            className="btn-premium-primary"
           >
             {optimizing ? <Loader2 size={18} className="animate-spin" /> : <RefreshCcw size={18} />}
             Prune Synaptic Clusters
@@ -143,8 +143,8 @@ export default function ConsciousnessPage() {
                        Neural Topology (Real-time)
                     </h3>
                     <div className="flex gap-2">
-                       <button className="px-3 py-1 bg-slate-900 border border-card-border rounded-lg text-[10px] font-bold text-slate-400 hover:text-white transition-all">2D Map</button>
-                       <button className="px-3 py-1 bg-primary text-slate-950 rounded-lg text-[10px] font-bold">Vector View</button>
+                       <button className="px-3 py-1 bg-slate-800/40 border border-card-border rounded-lg text-[10px] font-black text-slate-400 hover:text-white transition-all">2D Map</button>
+                       <button className="px-3 py-1 bg-primary border border-primary/50 shadow-[0_0_15px_rgba(6,182,212,0.3)] text-[#020617] rounded-lg text-[10px] font-black">Vector View</button>
                     </div>
                   </div>
 

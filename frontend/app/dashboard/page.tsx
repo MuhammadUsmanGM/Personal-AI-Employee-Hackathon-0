@@ -49,7 +49,7 @@ export default function DashboardPage() {
         </div>
         <button 
           onClick={() => loadDashboard(true)}
-          className="flex items-center gap-2 px-5 py-2.5 bg-emerald-blue-gradient rounded-xl font-bold text-sm text-slate-950 hover:opacity-90 transition-all shadow-lg shadow-primary/20 cursor-pointer active:scale-95 disabled:opacity-50"
+          className="btn-premium-primary"
           disabled={refreshing}
         >
           {refreshing ? <Loader2 size={18} className="animate-spin" /> : <Activity size={18} />}

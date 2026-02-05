@@ -215,11 +215,11 @@ export default function OperationsPage() {
                         </div>
                         
                         <div className="flex md:flex-col gap-3 justify-end md:w-48">
-                          <button className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-emerald-500 rounded-xl font-bold text-slate-950 hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20 active:scale-95">
+                          <button className="btn-premium-primary !text-[#020617] !font-black">
                             <CheckCircle size={18} />
                             Approve
                           </button>
-                          <button className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-slate-800 rounded-xl font-bold text-slate-300 hover:bg-red-500/10 hover:text-red-500 hover:border-red-500/50 transition-all border border-card-border active:scale-95">
+                          <button className="btn-premium-danger">
                             <Trash2 size={18} />
                             Reject
                           </button>
