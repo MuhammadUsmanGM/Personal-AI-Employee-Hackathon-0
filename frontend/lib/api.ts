@@ -1,4 +1,4 @@
-import { DashboardData, ConsciousnessState, RealityStatus, Task, ApprovalRequest, Communication, Transaction, KPI, BusinessWorkflow, ConsciousnessHistory } from "./types";
+import { DashboardData, ConsciousnessState, RealityStatus, Task, ApprovalRequest, Communication, Transaction, KPI, BusinessWorkflow, ConsciousnessHistory, RealityScenario } from "./types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
@@ -155,4 +155,53 @@ export async function fetchConsciousnessHistory(): Promise<ConsciousnessHistory[
     self_awareness: 0.8 + Math.random() * 0.15,
     attention: 0.7 + Math.random() * 0.25
   })) as ConsciousnessHistory[];
+}
+
+export async function fetchRealityScenarios(): Promise<RealityScenario[]> {
+  return [
+    { 
+      id: "S1", 
+      name: "Global Market Expansion", 
+      type: "strategic", 
+      probability: 0.65, 
+      status: "simulating", 
+      impact_score: 92, 
+      causal_links: 1422,
+      description: "Analyzing the impact of entering the EU market with a focus on local compliance.",
+      last_calculation: new Date().toISOString() 
+    },
+    { 
+      id: "S2", 
+      name: "Competitor Hostile Takeover", 
+      type: "business", 
+      probability: 0.12, 
+      status: "diverged", 
+      impact_score: 45, 
+      causal_links: 890,
+      description: "Low probability event with extreme volatility in primary revenue streams.",
+      last_calculation: new Date(Date.now() - 7200000).toISOString() 
+    },
+    { 
+      id: "S3", 
+      name: "Diamond Tier Customer Churn", 
+      type: "financial", 
+      probability: 0.05, 
+      status: "stable", 
+      impact_score: 98, 
+      causal_links: 2105,
+      description: "Scenario where top 5% of users exit simultaneously. Worst case projection.",
+      last_calculation: new Date(Date.now() - 3600000).toISOString() 
+    },
+    { 
+      id: "S4", 
+      name: "Standard Growth Path", 
+      type: "strategic", 
+      probability: 0.88, 
+      status: "anchored", 
+      impact_score: 15, 
+      causal_links: 450,
+      description: "Baseline projection with minimal risk and organic growth parameters.",
+      last_calculation: new Date().toISOString() 
+    }
+  ] as RealityScenario[];
 }

@@ -122,3 +122,15 @@ export interface BusinessWorkflow {
   total_steps: number;
   last_run: string;
 }
+
+export interface RealityScenario {
+  id: string;
+  name: string;
+  type: 'business' | 'personal' | 'strategic' | 'financial';
+  probability: number;
+  status: 'simulating' | 'stable' | 'diverged' | 'anchored';
+  impact_score: number;
+  causal_links: number;
+  description: string;
+  last_calculation: string;
+}
