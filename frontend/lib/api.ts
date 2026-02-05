@@ -213,3 +213,38 @@ export async function fetchTemporalTasks(): Promise<TemporalTask[]> {
     { id: "TT1", title: "Quarterly Financial Prophet Sync", scheduled_time: new Date(Date.now() + 3600000).toISOString(), timeline: "primary", priority: "high", status: "scheduled", impact_coefficient: 0.88 }
   ] as TemporalTask[];
 }
+
+export async function fetchUserPreferences(): Promise<any[]> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/dashboard/preferences`);
+    if (!response.ok) throw new Error("Backend offline");
+    const data = await response.json();
+    return data.preferences;
+  } catch (error) {
+    console.warn("Using mock preferences");
+    return [
+      { preference_key: "communication_whatsapp", preference_value: "true", preference_type: "communication" },
+      { preference_key: "workflow_causal_verification", preference_value: "true", preference_type: "operational" },
+      { preference_key: "ai_temporal_projection", preference_value: "true", preference_type: "behavioral" }
+    ];
+  }
+}
+
+export async function updateUserPreference(key: string, value: any, type: string = "operational"): Promise<void> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/dashboard/preferences`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_id: "demo_user@example.com",
+        preference_key: key,
+        preference_value: value,
+        preference_type: type
+      })
+    });
+    if (!response.ok) throw new Error("Failed to update preference");
+  } catch (error) {
+    console.error("Error updating preference:", error);
+    throw error;
+  }
+}

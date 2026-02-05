@@ -3,7 +3,7 @@ Dashboard API routes for Silver Tier Personal AI Employee System
 """
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime, timedelta
 
 from ...services.database import get_db_session
@@ -16,7 +16,8 @@ from ..models import (
     AnalyticsResponse,
     TaskOverviewResponse,
     TaskResponse,
-    UserPreferenceResponse
+    UserPreferenceResponse,
+    UserPreferenceCreateRequest
 )
 
 # Create router for dashboard endpoints
@@ -230,7 +231,7 @@ async def get_user_preferences(db: Session = Depends(get_db_session)):
 
     # Calculate learning confidence (average of all preference confidences)
     if preferences:
-        avg_confidence = sum(p.pref.confidence_level for p in preferences) / len(preferences)
+        avg_confidence = sum(p.confidence_level for p in preferences if p.confidence_level is not None) / len(preferences)
     else:
         avg_confidence = 0.0
 
@@ -239,6 +240,45 @@ async def get_user_preferences(db: Session = Depends(get_db_session)):
         "learning_confidence": avg_confidence,
         "last_updated": datetime.utcnow().isoformat()
     }
+
+
+@dashboard_router.post("/preferences", response_model=dict)
+async def update_user_preference(
+    request: UserPreferenceCreateRequest,
+    db: Session = Depends(get_db_session)
+):
+    """
+    Update or create a user preference
+    """
+    # Initialize service
+    preference_service = UserPreferenceService(db)
+
+    # Check if preference exists
+    existing = preference_service.get_preference(request.user_id, request.preference_key)
+    
+    if existing:
+        # Update existing
+        updated = preference_service.update_preference_value(
+            request.user_id, 
+            request.preference_key, 
+            request.preference_value
+        )
+        return {
+            "status": "updated",
+            "preference": UserPreferenceResponse.from_orm(updated)
+        }
+    else:
+        # Create new
+        new_pref = preference_service.create_preference(
+            request.user_id,
+            request.preference_key,
+            request.preference_value,
+            request.preference_type or "operational"
+        )
+        return {
+            "status": "created",
+            "preference": UserPreferenceResponse.from_orm(new_pref)
+        }
 
 
 # Additional dashboard endpoints can be added here
