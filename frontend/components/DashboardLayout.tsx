@@ -39,6 +39,7 @@ export default function SidebarLayout({
     { icon: <Clock size={20} />, label: "Temporal", href: "/temporal" },
     { icon: <Globe2 size={20} />, label: "Reality", href: "/reality" },
     { icon: <ShieldCheck size={20} />, label: "Security", href: "/security" },
+    { icon: <Settings size={20} />, label: "Settings", href: "/settings" },
   ];
 
   useEffect(() => {
