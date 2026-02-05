@@ -48,7 +48,7 @@ export default function LandingPage() {
              <Link href="/dashboard" className="text-sm font-bold hover:text-primary transition-colors hidden sm:block">Sign In</Link>
              <Link 
                href="/dashboard" 
-               className="px-5 py-2.5 bg-emerald-blue-gradient rounded-full text-slate-950 text-sm font-black hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/20"
+               className="btn-premium-primary !px-5 !py-2.5 !rounded-full"
              >
                Launch ELYX
              </Link>
@@ -80,12 +80,12 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link 
                href="/dashboard" 
-               className="w-full sm:w-auto px-8 py-4 bg-emerald-blue-gradient rounded-2xl text-slate-950 font-black flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/30"
+               className="btn-premium-primary w-full sm:w-auto"
             >
               Get Started for Free
               <ArrowRight size={20} />
             </Link>
-            <button className="w-full sm:w-auto px-8 py-4 bg-slate-900 border border-card-border rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-slate-800 transition-all">
+            <button className="btn-premium-secondary w-full sm:w-auto">
               <Play size={18} fill="currentColor" />
               Watch Simulation
             </button>
@@ -160,11 +160,11 @@ export default function LandingPage() {
            </div>
            
            <div className="flex gap-8 text-xs font-bold text-slate-500">
-             <Link href="#" className="hover:text-primary">Terms</Link>
-             <Link href="#" className="hover:text-primary">Privacy</Link>
-             <Link href="#" className="hover:text-primary">Security</Link>
-             <Link href="#" className="hover:text-primary">API Documentation</Link>
-           </div>
+              <Link href="/terms" className="hover:text-primary transition-colors">Terms</Link>
+              <Link href="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
+              <Link href="/cookies" className="hover:text-primary transition-colors">Cookies</Link>
+              <Link href="/security" className="hover:text-primary transition-colors">Security Center</Link>
+            </div>
 
            <p className="text-xs text-slate-600">© 2026 Personal AI Employee Hackathon 0. All rights preserved across timelines.</p>
         </div>

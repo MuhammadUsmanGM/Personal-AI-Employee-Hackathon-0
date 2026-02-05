@@ -59,12 +59,12 @@ export default function SidebarLayout({
     <div className="flex min-h-screen bg-[#020617]">
       {/* Sidebar */}
       <aside className="w-64 border-r border-card-border bg-[#020617]/50 backdrop-blur-xl flex flex-col fixed h-full z-20">
-        <div className="p-6 flex items-center gap-3">
+        <Link href="/" className="p-6 flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
           <div className="relative w-10 h-10">
             <Image src="/icon.png" alt="ELYX Icon" fill className="object-contain" />
           </div>
           <Image src="/text.png" alt="ELYX" width={80} height={20} className="object-contain" />
-        </div>
+        </Link>
 
         <nav className="flex-1 px-4 py-4 space-y-1">
           {sidebarItems.map((item, i) => {
