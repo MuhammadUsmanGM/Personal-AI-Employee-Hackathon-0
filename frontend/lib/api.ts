@@ -1,4 +1,4 @@
-import { DashboardData, ConsciousnessState, RealityStatus, Task, ApprovalRequest, Communication, Transaction, KPI, BusinessWorkflow } from "./types";
+import { DashboardData, ConsciousnessState, RealityStatus, Task, ApprovalRequest, Communication, Transaction, KPI, BusinessWorkflow, ConsciousnessHistory } from "./types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
@@ -145,4 +145,14 @@ export async function fetchWorkflows(): Promise<BusinessWorkflow[]> {
     { id: "WF2", name: "Client Onboarding Simulation", status: "completed", efficiency: 100, steps_completed: 12, total_steps: 12, last_run: new Date(Date.now() - 3600000).toISOString() },
     { id: "WF3", name: "Social Media Sentiment Loop", status: "paused", efficiency: 82, steps_completed: 1, total_steps: 3, last_run: new Date(Date.now() - 7200000).toISOString() }
   ] as BusinessWorkflow[];
+}
+
+export async function fetchConsciousnessHistory(): Promise<ConsciousnessHistory[]> {
+  // Generate mock history data for the last 24 hours
+  return Array.from({ length: 24 }, (_, i) => ({
+    timestamp: new Date(Date.now() - (23 - i) * 3600000).toISOString(),
+    phi: 85 + Math.random() * 10,
+    self_awareness: 0.8 + Math.random() * 0.15,
+    attention: 0.7 + Math.random() * 0.25
+  })) as ConsciousnessHistory[];
 }

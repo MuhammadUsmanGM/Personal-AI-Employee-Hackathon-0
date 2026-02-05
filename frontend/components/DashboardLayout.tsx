@@ -31,7 +31,7 @@ export default function SidebarLayout({
   const [data, setData] = useState<DashboardData | null>(null);
 
   const sidebarItems = [
-    { icon: <LayoutDashboard size={20} />, label: "Dashboard", href: "/" },
+    { icon: <LayoutDashboard size={20} />, label: "Dashboard", href: "/dashboard" },
     { icon: <CheckCircle2 size={20} />, label: "Operations", href: "/operations" },
     { icon: <Activity size={20} />, label: "Business", href: "/business" },
     { icon: <MessageSquare size={20} />, label: "Communications", href: "/comms" },

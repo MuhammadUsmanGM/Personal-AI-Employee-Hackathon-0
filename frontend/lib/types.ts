@@ -32,6 +32,13 @@ export interface TaskStatus {
   active_chains: number;
 }
 
+export interface ConsciousnessHistory {
+  timestamp: string;
+  phi: number;
+  self_awareness: number;
+  attention: number;
+}
+
 export interface DashboardData {
   consciousness: ConsciousnessState;
   reality: RealityStatus;
