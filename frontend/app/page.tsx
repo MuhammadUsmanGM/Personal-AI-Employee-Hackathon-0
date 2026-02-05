@@ -69,7 +69,7 @@ export default function LandingPage() {
 
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-        scrolled ? "bg-[#020617]/80 backdrop-blur-xl border-b border-card-border py-4" : "py-8"
+        scrolled ? "bg-[#020617]/80 backdrop-blur-xl border-b border-card-border py-2" : "py-3"
       }`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
@@ -100,7 +100,7 @@ export default function LandingPage() {
       </nav>
 
       {/* 1. HERO SECTION */}
-      <section className="relative pt-48 pb-24 md:pt-72 md:pb-48 px-6">
+      <section className="relative pt-24 pb-24 md:pt-24 md:pb-24 px-6">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <div className="text-left">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/50 border border-primary/20 text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-10 animate-fade-in">
