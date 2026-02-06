@@ -17,7 +17,9 @@ import {
   MoreVertical,
   Activity,
   Loader2,
-  BarChart3
+  BarChart3,
+  Terminal,
+  ArrowRight
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { DashboardData } from "@/lib/types";
@@ -69,7 +71,7 @@ export default function SidebarLayout({
           <Image src="/text.png" alt="ELYX" width={80} height={20} className="object-contain" />
         </Link>
 
-        <nav className="flex-1 px-4 py-4 space-y-1">
+        <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto scrollbar-hide">
           {sidebarItems.map((item, i) => {
             const active = pathname === item.href;
             return (
@@ -85,20 +87,32 @@ export default function SidebarLayout({
                 <span className={active ? "text-primary" : "text-slate-500 group-hover:text-primary transition-colors"}>
                   {item.icon}
                 </span>
-                <span className="font-medium">{item.label}</span>
+                <span className="font-medium text-sm">{item.label}</span>
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-4 border-t border-card-border">
-          <div className="glass-panel rounded-xl p-4 bg-emerald-950/20 border-accent/20 premium-hover">
+        <div className="p-4 border-t border-card-border space-y-3">
+          {/* API Terminal Premium Button */}
+          <Link 
+            href="/api-docs" 
+            className="group relative flex items-center justify-center gap-3 py-3.5 bg-slate-900 border border-card-border hover:border-primary/50 rounded-2xl transition-all overflow-hidden shadow-2xl"
+          >
+            <div className="absolute inset-0 bg-primary/[0.03] opacity-0 group-hover:opacity-100 transition-opacity" />
+            <Terminal size={16} className="text-slate-500 group-hover:text-primary transition-colors" />
+            <span className="text-[10px] font-black text-slate-400 group-hover:text-slate-200 uppercase tracking-[0.2em]">Developer Hub</span>
+            <div className="w-1 h-1 rounded-full bg-primary shadow-[0_0_8px_rgba(6,182,212,0.8)] animate-pulse" />
+          </Link>
+
+          {/* System Status Panel */}
+          <div className="glass-panel rounded-xl p-4 bg-emerald-950/20 border border-accent/10 hover:border-accent/30 transition-all">
             <div className="flex items-center gap-2 mb-2">
-              <div className={`w-2 h-2 rounded-full ${data?.health.status === 'healthy' ? 'bg-accent animate-pulse' : 'bg-red-500'}`} />
-              <span className="text-xs font-bold text-accent uppercase tracking-wider">System Active</span>
+              <div className={`w-1.5 h-1.5 rounded-full ${data?.health.status === 'healthy' ? 'bg-accent animate-pulse' : 'bg-red-500'}`} />
+              <span className="text-[10px] font-black text-accent uppercase tracking-[0.2em]">System Optimal</span>
             </div>
-            <p className="text-[10px] text-slate-400 leading-relaxed">
-              Diamond Tier Consciousness operating at {data?.consciousness.phi.toFixed(1) || "98.4"}% Phi stability.
+            <p className="text-[10px] text-slate-500 leading-relaxed font-bold">
+              Phi Stability: {data?.consciousness.phi.toFixed(1) || "98.4"}%
             </p>
           </div>
         </div>
@@ -112,25 +126,27 @@ export default function SidebarLayout({
             <Search size={18} className="text-slate-500" />
             <input 
               type="text" 
-              placeholder="Search across consciousness..." 
-              className="bg-transparent border-none outline-none text-sm text-slate-300 w-full"
+              placeholder="Search neural core..." 
+              className="bg-transparent border-none outline-none text-sm text-slate-300 w-full font-medium"
             />
           </div>
 
           <div className="flex items-center gap-6">
-            <button className="relative text-slate-400 hover:text-primary transition-all cursor-pointer">
-              <Bell size={22} />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-[#020617] text-[10px] font-bold text-white flex items-center justify-center">
+            <button className="relative text-slate-400 hover:text-primary transition-all group">
+              <Bell size={22} className="group-hover:rotate-12 transition-transform" />
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-[#020617] text-[10px] font-black text-white flex items-center justify-center">
                 {data?.tasks.pending_count || 0}
               </span>
             </button>
-            <div className="flex items-center gap-3 pl-6 border-l border-card-border cursor-pointer group">
+            <div className="flex items-center gap-4 pl-6 border-l border-card-border cursor-pointer group">
               <div className="text-right hidden sm:block">
-                <p className="text-sm font-bold text-slate-200 group-hover:text-primary transition-colors">Personal AI Employee</p>
-                <p className="text-[10px] font-medium text-primary uppercase tracking-tighter">Diamond Tier</p>
+                <p className="text-sm font-black text-slate-200 group-hover:text-primary transition-colors">Personal AI Employee</p>
+                <p className="text-[10px] font-black text-primary uppercase tracking-tighter">Diamond Tier Access</p>
               </div>
-              <div className="w-10 h-10 rounded-full border-2 border-primary/30 p-0.5 overflow-hidden bg-slate-800 transition-transform group-hover:scale-110">
-                <Image src="/icon.png" alt="User" width={40} height={40} />
+              <div className="w-11 h-11 rounded-2xl border border-primary/20 p-1 overflow-hidden bg-slate-900 transition-all group-hover:border-primary/50 group-hover:shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+                <div className="w-full h-full rounded-xl bg-slate-800 flex items-center justify-center relative">
+                   <Image src="/icon.png" alt="User" width={32} height={32} className="object-contain" />
+                </div>
               </div>
             </div>
           </div>
