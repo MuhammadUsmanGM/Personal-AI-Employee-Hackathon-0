@@ -1,32 +1,33 @@
+"""
+Response Coordinator Service - Orchestrates response sending across all channels
+"""
 import asyncio
 import time
-from datetime import datetime
 from typing import Dict, Any, Optional, List
-from enum import Enum
+from pathlib import Path
+import logging
 
-from src.response_handlers.email_response_handler import EmailResponseHandler
-from src.response_handlers.linkedin_response_handler import LinkedInResponseHandler
-from src.response_handlers.whatsapp_response_handler import WhatsAppResponseHandler
-from src.response_handlers.base_handler import CommunicationChannel, ResponseStatus
-from src.services.conversation_tracker import ConversationTracker, ResponseType, Priority
+from src.services.response_coordinator import ResponseCoordinator
+from src.response_handlers.base_handler import CommunicationChannel, ResponseStatus, ResponseType, Priority
+from src.services.conversation_tracker import ConversationTracker
 from src.services.approval_workflow import ApprovalWorkflow, MessageType
 
 
-class ResponseCoordinator:
+class ResponseCoordinatorService:
     """
-    Service to coordinate response sending across all communication channels
+    Service layer that coordinates the response coordinator with the orchestrator
     """
     def __init__(self, vault_path: str = "./obsidian_vault"):
-        # Initialize handlers lazily to avoid credential issues during instantiation
-        self._email_handler = None
-        self._linkedin_handler = None
-        self._whatsapp_handler = None
-
+        self.vault_path = Path(vault_path)
+        self.response_coordinator = ResponseCoordinator(vault_path=vault_path)
         self.conversation_tracker = ConversationTracker(vault_path)
         self.approval_workflow = ApprovalWorkflow(vault_path)
 
         # Response queue for async processing
         self.response_queue = asyncio.Queue()
+
+        # Set up logger
+        self.logger = logging.getLogger(self.__class__.__name__)
 
         # Rate limiting tracking
         self.rate_limits = {
@@ -35,34 +36,17 @@ class ResponseCoordinator:
             CommunicationChannel.WHATSAPP: {"requests": [], "limit": 50, "window": 3600}  # 50/hour estimate
         }
 
-    @property
-    def email_handler(self):
-        """Lazy initialization of email handler"""
-        if self._email_handler is None:
-            from src.response_handlers.email_response_handler import EmailResponseHandler
-            self._email_handler = EmailResponseHandler()
-        return self._email_handler
-
-    @property
-    def linkedin_handler(self):
-        """Lazy initialization of LinkedIn handler"""
-        if self._linkedin_handler is None:
-            from src.response_handlers.linkedin_response_handler import LinkedInResponseHandler
-            self._linkedin_handler = LinkedInResponseHandler()
-        return self._linkedin_handler
-
-    @property
-    def whatsapp_handler(self):
-        """Lazy initialization of WhatsApp handler"""
-        if self._whatsapp_handler is None:
-            from src.response_handlers.whatsapp_response_handler import WhatsAppResponseHandler
-            self._whatsapp_handler = WhatsAppResponseHandler()
-        return self._whatsapp_handler
-
-    async def queue_response(self, original_message_id: str, channel: CommunicationChannel,
-                           recipient_identifier: str, content: str, response_type: ResponseType = ResponseType.INFORMATIONAL,
-                           priority: Priority = Priority.MEDIUM, requires_approval: bool = False,
-                           subject: Optional[str] = None) -> Dict[str, Any]:
+    async def queue_response(
+        self,
+        original_message_id: str,
+        channel: CommunicationChannel,
+        recipient_identifier: str,
+        content: str,
+        response_type: ResponseType = ResponseType.INFORMATIONAL,
+        priority: Priority = Priority.MEDIUM,
+        requires_approval: bool = False,
+        subject: Optional[str] = None
+    ) -> Dict[str, Any]:
         """
         Queue a response to be sent to the specified recipient
 
@@ -79,7 +63,6 @@ class ResponseCoordinator:
         Returns:
             Dictionary with response details and status
         """
-        import time
         response_id = f"resp_{int(time.time())}_{original_message_id[:8]}"
 
         # Check if approval is required based on content or configuration
@@ -97,7 +80,7 @@ class ResponseCoordinator:
                 "id": response_id,
                 "status": ResponseStatus.APPROVAL_REQUIRED.value,
                 "approval_id": approval_id,
-                "queued_at": datetime.now().isoformat(),
+                "queued_at": time.time(),
                 "channel": channel.value,
                 "recipient": recipient_identifier
             }
@@ -108,7 +91,7 @@ class ResponseCoordinator:
                 "id": response_id,
                 "status": ResponseStatus.FAILED.value,
                 "error": "Rate limit exceeded",
-                "queued_at": datetime.now().isoformat()
+                "queued_at": time.time()
             }
 
         # Create response message object
@@ -122,7 +105,7 @@ class ResponseCoordinator:
             "priority": priority,
             "status": ResponseStatus.QUEUED.value,
             "subject": subject,
-            "queued_at": datetime.now().isoformat()
+            "queued_at": time.time()
         }
 
         # Add to queue
@@ -152,10 +135,24 @@ class ResponseCoordinator:
         return {
             "id": response_id,
             "status": ResponseStatus.QUEUED.value,
-            "queued_at": datetime.now().isoformat(),
+            "queued_at": time.time(),
             "channel": channel.value,
             "recipient": recipient_identifier
         }
+
+    def get_response_status(self, response_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Get the status of a specific response
+
+        Args:
+            response_id: ID of the response to check
+
+        Returns:
+            Dictionary with response status or None if not found
+        """
+        # This would interface with a database or file system to track response statuses
+        # For now, we'll return a placeholder
+        return self.response_coordinator.get_response_status(response_id)
 
     async def process_response_queue(self):
         """
@@ -171,7 +168,7 @@ class ResponseCoordinator:
 
                 # Update response status
                 response_message["status"] = result.get("status", ResponseStatus.FAILED.value)
-                response_message["sent_at"] = datetime.now().isoformat()
+                response_message["sent_at"] = time.time()
 
                 # Add to rate limit tracking
                 self._record_rate_limit_call(response_message["channel"])
@@ -200,13 +197,13 @@ class ResponseCoordinator:
 
         try:
             if channel == CommunicationChannel.EMAIL:
-                result = await self.email_handler.send_response(
+                result = await self.response_coordinator.email_handler.send_response(
                     recipient, content, subject=subject or "Response from AI Employee"
                 )
             elif channel == CommunicationChannel.LINKEDIN:
-                result = await self.linkedin_handler.send_response(recipient, content)
+                result = await self.response_coordinator.linkedin_handler.send_response(recipient, content)
             elif channel == CommunicationChannel.WHATSAPP:
-                result = await self.whatsapp_handler.send_response(recipient, content)
+                result = await self.response_coordinator.whatsapp_handler.send_response(recipient, content)
             else:
                 raise ValueError(f"Unsupported communication channel: {channel}")
 
@@ -214,41 +211,6 @@ class ResponseCoordinator:
 
         except Exception as e:
             return await self._handle_send_error(response_message, e)
-
-    async def send_direct_response(self, channel: CommunicationChannel, recipient_identifier: str,
-                                 content: str, subject: Optional[str] = None) -> Dict[str, Any]:
-        """
-        Send a response directly without queuing (for immediate responses)
-
-        Args:
-            channel: Communication channel to send through
-            recipient_identifier: Platform-specific identifier for the recipient
-            content: Content of the response message
-            subject: Subject for email responses (optional)
-
-        Returns:
-            Dictionary with send result
-        """
-        # Check rate limits
-        if not self._check_rate_limit(channel):
-            return {
-                "status": ResponseStatus.FAILED.value,
-                "error": "Rate limit exceeded",
-                "timestamp": datetime.now().isoformat()
-            }
-
-        # Send directly
-        result = await self._send_response_now({
-            "channel": channel,
-            "recipient_identifier": recipient_identifier,
-            "content": content,
-            "subject": subject
-        })
-
-        # Add to rate limit tracking
-        self._record_rate_limit_call(channel)
-
-        return result
 
     def _requires_approval(self, content: str, response_type: ResponseType) -> bool:
         """
@@ -324,31 +286,6 @@ class ResponseCoordinator:
         return {
             "status": ResponseStatus.FAILED.value,
             "error": str(error),
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": time.time(),
             "recipient": response_message.get("recipient_identifier", "unknown")
         }
-
-    def get_response_status(self, response_id: str) -> Optional[Dict[str, Any]]:
-        """
-        Get the status of a specific response
-
-        Args:
-            response_id: ID of the response to check
-
-        Returns:
-            Dictionary with response status or None if not found
-        """
-        # In a full implementation, this would check persistent storage
-        # For now, we'll just return a placeholder
-        # This would typically interface with a database or file system to track response statuses
-        return {
-            "id": response_id,
-            "status": "STATUS_PENDING_IMPLEMENTATION",
-            "timestamp": datetime.now().isoformat()
-        }
-
-    async def start_processing_loop(self):
-        """
-        Start the background processing loop for the response queue
-        """
-        await self.process_response_queue()

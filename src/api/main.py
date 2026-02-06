@@ -874,6 +874,7 @@ from .routes.tasks import task_router
 from .routes.approval import approval_router
 from .routes.ai import ai_router
 from .routes.enterprise import enterprise_router
+from .routes.communication import communication_router
 
 # Platinum Tier routes
 try:
@@ -918,6 +919,7 @@ app.include_router(task_router, prefix="/api", tags=["tasks"])
 app.include_router(approval_router, prefix="/api", tags=["approvals"])
 app.include_router(ai_router, prefix="/api", tags=["ai"])
 app.include_router(enterprise_router, prefix="/api", tags=["enterprise"])
+app.include_router(communication_router, prefix="/api", tags=["communication"])
 
 try:
     from .routes.users import router as users_router

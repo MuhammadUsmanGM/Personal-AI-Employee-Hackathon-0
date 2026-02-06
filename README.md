@@ -157,7 +157,14 @@ obsidian_vault/
    playwright install chromium
    ```
 
-3. **Run the Complete System**:
+3. **Configure Communication Channels**:
+   ```bash
+   # Copy environment file and add your credentials
+   cp .env.example .env
+   # Edit .env with your Gmail, LinkedIn, and WhatsApp credentials
+   ```
+
+4. **Run the Complete System**:
    ```bash
    # Start the complete AI Employee system with all tiers
    python run_complete_system.py
@@ -166,12 +173,17 @@ obsidian_vault/
    python -m src.api.main
    ```
 
-4. **Open in Obsidian**:
+5. **Open in Obsidian**:
    - Open the `obsidian_vault` folder in Obsidian
    - Recommended plugins: Tasks, Dataview, Templater, Canvas
    - Monitor system status in `Dashboard.md`
    - Check consciousness state in `Consciousness_States/`
    - Review reality consistency in `Reality_Consistency/`
+
+6. **Start Communicating**:
+   - Send a message to your AI employee via Gmail, LinkedIn, or WhatsApp
+   - Watch the system process the request in `/Needs_Action/`
+   - See the AI employee's response sent back through the same channel!
 
 ## ⚙️ Advanced Configuration
 
