@@ -21,11 +21,15 @@ import {
   Terminal,
   ArrowRight,
   HelpCircle,
-  Users
+  Users,
+  LogOut
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { DashboardData } from "@/lib/types";
 import { fetchDashboardData } from "@/lib/api";
+import { supabase } from "@/lib/supabase";
+import { User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 
 export default function SidebarLayout({
   children,
@@ -34,6 +38,8 @@ export default function SidebarLayout({
 }) {
   const pathname = usePathname();
   const [data, setData] = useState<DashboardData | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
 
   const sidebarItems = [
     { icon: <LayoutDashboard size={20} />, label: "Dashboard", href: "/dashboard" },
@@ -50,6 +56,15 @@ export default function SidebarLayout({
   ];
 
   useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session && pathname !== "/auth") {
+        router.push("/auth");
+      }
+      setUser(session?.user ?? null);
+    };
+    checkUser();
+
     const loadData = async () => {
       try {
         const dashData = await fetchDashboardData();
@@ -61,7 +76,12 @@ export default function SidebarLayout({
     loadData();
     const interval = setInterval(loadData, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [pathname, router]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.push("/auth");
+  };
 
   return (
     <div className="flex min-h-screen bg-[#020617]">
@@ -152,16 +172,23 @@ export default function SidebarLayout({
                 {data?.tasks.pending_count || 0}
               </span>
             </button>
-            <div className="flex items-center gap-4 pl-6 border-l border-card-border cursor-pointer group">
+            <div className="flex items-center gap-4 pl-6 border-l border-card-border group relative">
               <div className="text-right hidden sm:block">
-                <p className="text-sm font-black text-slate-200 group-hover:text-primary transition-colors">Personal AI Employee</p>
-                <p className="text-[10px] font-black text-primary uppercase tracking-tighter">Diamond Tier Access</p>
+                <p className="text-sm font-black text-slate-200 group-hover:text-primary transition-colors">
+                  {user?.email?.split('@')[0] || "Neural Entity"}
+                </p>
+                <p className="text-[10px] font-black text-primary uppercase tracking-tighter">
+                  {user ? "Verified Agent" : "Diamond Tier Access"}
+                </p>
               </div>
-              <div className="w-11 h-11 rounded-2xl border border-primary/20 p-1 overflow-hidden bg-slate-900 transition-all group-hover:border-primary/50 group-hover:shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+              <button 
+                onClick={handleSignOut}
+                className="w-11 h-11 rounded-2xl border border-primary/20 p-1 overflow-hidden bg-slate-900 transition-all group-hover:border-red-500/50 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)] flex items-center justify-center group"
+              >
                 <div className="w-full h-full rounded-xl bg-slate-800 flex items-center justify-center relative">
-                   <Image src="/icon.png" alt="User" width={32} height={32} className="object-contain" />
+                   <LogOut size={18} className="text-slate-400 group-hover:text-red-500 transition-colors" />
                 </div>
-              </div>
+              </button>
             </div>
           </div>
         </header>
