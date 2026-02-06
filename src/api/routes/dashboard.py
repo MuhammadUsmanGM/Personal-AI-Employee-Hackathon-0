@@ -128,6 +128,24 @@ async def get_system_analytics(
     improving = True  # Mock trend
     percentage_change = 12.5  # Mock percentage change
 
+    # Engagement by hour (temporal density)
+    engagement_by_hour = []
+    for hour in range(24):
+        # Mock calculation based on simulated activity patterns
+        engagement = 20 + (80 * (1 - abs(hour - 14) / 12) * (0.8 + 0.2 * (datetime.utcnow().microsecond % 100) / 100))
+        engagement_by_hour.append({
+            "hour": hour,
+            "engagement": min(100.0, max(0.0, engagement))
+        })
+
+    # Communication stats breakdown
+    communication_stats = {
+        "email": tasks_by_category.get("email", 0) * 2.5,  # scaling for effect
+        "whatsapp": tasks_by_category.get("custom", 0) * 1.8,
+        "linkedin": tasks_by_category.get("crm", 0) * 1.2,
+        "internal": total_tasks * 0.4
+    }
+
     return AnalyticsResponse(
         timeframe=request.timeframe,
         metrics={
@@ -136,7 +154,9 @@ async def get_system_analytics(
             "average_response_time": average_response_time,
             "success_rate": success_rate,
             "user_satisfaction": user_satisfaction,
-            "task_completion_by_category": tasks_by_category
+            "task_completion_by_category": tasks_by_category,
+            "communication_stats": communication_stats,
+            "engagement_by_hour": engagement_by_hour
         },
         trends={
             "improving": improving,

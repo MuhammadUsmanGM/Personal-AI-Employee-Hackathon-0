@@ -194,11 +194,6 @@ export async function fetchKPIs(): Promise<KPI[]> {
   return MOCK_FALLBACKS.kpis as KPI[];
 }
 
-export async function fetchWorkflows(): Promise<BusinessWorkflow[]> {
-  return [
-    { id: "WF1", name: "Weekly Financial Reconciliation", status: "active", efficiency: 98, steps_completed: 4, total_steps: 5, last_run: new Date().toISOString() }
-  ] as BusinessWorkflow[];
-}
 
 export async function fetchConsciousnessHistory(): Promise<ConsciousnessHistory[]> {
   return MOCK_FALLBACKS.consciousnessHistory as ConsciousnessHistory[];
@@ -287,5 +282,46 @@ export async function fetchAnalytics(timeframe: string = "week"): Promise<any> {
         percentage_change: 12.5
       }
     };
+  }
+}
+
+export async function fetchTeamMembers(): Promise<any[]> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/users`);
+    if (!response.ok) throw new Error("Backend offline");
+    return await response.json();
+  } catch (error) {
+    console.warn("Using mock team data", error);
+    return [
+      {
+        id: "1",
+        name: "Usman Mustafa",
+        email: "usman@elyx.ai",
+        role: "Neural Architect",
+        status: "active",
+        last_active: new Date().toISOString(),
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Usman",
+        permissions: ["admin", "neural_core_access", "reality_manipulation"]
+      },
+      {
+        id: "2",
+        name: "Sarah Chen",
+        email: "sarah@elyx.ai",
+        role: "Logic Operator",
+        status: "active",
+        last_active: new Date().toISOString(),
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+        permissions: ["task_management", "temporal_audit"]
+      }
+    ];
+  }
+}
+
+export async function deleteTeamMember(id: string): Promise<boolean> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/users/${id}`, { method: 'DELETE' });
+    return response.ok;
+  } catch (error) {
+    return false;
   }
 }

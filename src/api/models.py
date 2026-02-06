@@ -249,6 +249,32 @@ class BulkUpdateResponse(BaseModel):
     errors: List[Dict[str, str]]
 
 
+class TeamMemberResponse(BaseModel):
+    """Response model for TeamMember entity"""
+    id: str
+    name: str
+    email: str
+    role: Optional[str] = None
+    status: str
+    last_active: datetime
+    avatar: Optional[str] = None
+    permissions: List[str] = []
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class TeamMemberCreateRequest(BaseModel):
+    """Request model for creating a TeamMember"""
+    name: str
+    email: str
+    role: Optional[str] = "Operator"
+    status: Optional[str] = "active"
+    avatar: Optional[str] = None
+    permissions: Optional[List[str]] = []
+
+
 # Import Gold Tier models
 from .gold_tier_models import (
     # Strategic Objective Models

@@ -919,6 +919,12 @@ app.include_router(approval_router, prefix="/api", tags=["approvals"])
 app.include_router(ai_router, prefix="/api", tags=["ai"])
 app.include_router(enterprise_router, prefix="/api", tags=["enterprise"])
 
+try:
+    from .routes.users import router as users_router
+    app.include_router(users_router, prefix="/api", tags=["users"])
+except ImportError as e:
+    print(f"Warning: Could not import Users routes: {e}")
+
 # Error handling
 @app.exception_handler(404)
 async def custom_http_exception_handler(request, exc):

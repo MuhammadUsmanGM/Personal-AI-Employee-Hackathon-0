@@ -180,9 +180,25 @@ class LearningModel(Base):
     accuracy_score = Column(Float)
     last_trained_at = Column(DateTime)
     is_active = Column(Boolean, default=True)
-    model_parameters = Column(JSON)  # algorithm-specific parameters
-    performance_metrics = Column(JSON)  # accuracy, precision, recall, etc.
     feature_importance = Column(JSON)  # which factors influence decisions most
+    performance_metrics = Column(JSON)  # accuracy, precision, recall, etc.
+
+class TeamMember(Base):
+    """
+    Team Member model for the Personal AI Employee platform
+    """
+    __tablename__ = 'team_members'
+
+    id = Column(String, primary_key=True, default=generate_uuid)
+    name = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False, unique=True)
+    role = Column(String(100))
+    status = Column(String(20), default='active')  # active, pending, inactive
+    last_active = Column(DateTime, default=datetime.utcnow)
+    avatar = Column(String(255))
+    permissions = Column(JSON)  # list of permission strings
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 def init_db(database_url: str = "sqlite:///silver_tier.db"):
     """
