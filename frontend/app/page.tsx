@@ -48,7 +48,7 @@ export default function LandingPage() {
     },
     {
       q: "Is my corporate data secure?",
-      a: "Yes. ELYX uses Diamond Tier security protocols, including end-to-end causal chain encryption and GDPR-compliant server infrastructure based in isolated environments."
+      a: "Yes. ELYX uses enterprise-grade security protocols, including end-to-end causal chain encryption and GDPR-compliant server infrastructure based in isolated environments."
     },
     {
       q: "Can I customize ELYX's autonomous decisions?",
@@ -166,7 +166,7 @@ export default function LandingPage() {
       <section id="features" className="py-32 px-6 border-t border-card-border/30">
         <div className="max-w-7xl mx-auto text-center mb-24">
           <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter">Core Capabilities</h2>
-          <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto tracking-tight">Harness the power of Diamond-Tier neural processing to scale your business operations instantly.</p>
+          <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto tracking-tight">Harness the power of high-fidelity neural processing to scale your business operations instantly.</p>
         </div>
 
         <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-10">
@@ -264,8 +264,8 @@ export default function LandingPage() {
       {/* 4. BENEFITS SECTION */}
       <section id="benefits" className="py-32 px-6 relative border-b border-card-border/30">
          <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center">
-            <div className="flex-1 space-y-12">
-               <h2 className="text-4xl md:text-5xl font-black tracking-tight">Exponential Business <br /><span className="emerald-blue-text">Benefits</span></h2>
+             <div className="flex-1 space-y-12">
+                <h2 className="text-4xl md:text-5xl font-black tracking-tight">Exponential Business <br /><span className="emerald-blue-text">Benefits</span></h2>
                <div className="grid gap-10">
                   {[
                     { title: "Velocity Scaling", desc: "Reduces response time from hours to minutes, ensuring 100% lead capture rate." },
@@ -420,9 +420,9 @@ export default function LandingPage() {
                 features: ["5 AI Cores", "All Channels (WA, LI, EM)", "Priority Neural Path", "24/7 Availability", "Custom Brand Voice"]
               },
               { 
-                tier: "Diamond", 
+                tier: "Enterprise", 
                 price: "Custom", 
-                desc: "Unlimited scale and reality simulations.",
+                desc: "Unlimited scale and complexity management.",
                 features: ["Unlimited Cores", "Full API Access", "Reality Simulation Hub", "Account Manager", "Dedicated Infrastructure"]
               }
             ].map((p, i) => (

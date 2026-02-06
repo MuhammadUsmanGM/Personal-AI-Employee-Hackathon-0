@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "ELYX | Digital AI Employee",
-  description: "Advanced Diamond Tier AI reasoning and autonomous task management.",
+  description: "Advanced Neural-tier AI reasoning and autonomous task management.",
   icons: {
     icon: "/icon.png",
   },

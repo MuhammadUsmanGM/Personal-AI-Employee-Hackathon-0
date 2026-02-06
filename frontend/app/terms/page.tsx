@@ -62,7 +62,7 @@ export default function TermsAndConditions() {
         </div>
 
         <div className="mt-20 pt-8 border-t border-card-border text-xs text-slate-500">
-           Last updated: February 2026 • Version 2.0 (Diamond Tier)
+           Last updated: February 2026 • Version 2.0 (Neural-Enterprise)
         </div>
       </div>
     </div>

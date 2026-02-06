@@ -140,7 +140,7 @@ export default function OnboardingPage() {
                 </div>
                 <div className="p-4 rounded-2xl bg-slate-900/50 border border-card-border/50">
                    <Settings size={20} className="text-accent mb-2" />
-                   <p className="text-[10px] font-black uppercase text-slate-500 tracking-tighter">Diamond Tier</p>
+                   <p className="text-[10px] font-black uppercase text-slate-500 tracking-tighter">Enterprise Hub</p>
                    <p className="text-[11px] font-bold text-slate-200">Advanced AI capabilities.</p>
                 </div>
               </div>
@@ -210,7 +210,7 @@ export default function OnboardingPage() {
                 </div>
                 <div className="space-y-4">
                   <h2 className="text-4xl font-black tracking-tight">Initializing Reality Bridge</h2>
-                  <p className="text-slate-400 font-bold max-w-sm mx-auto">All neural pathways have been mapped. Preparing your Diamond Tier workspace.</p>
+                  <p className="text-slate-400 font-bold max-w-sm mx-auto">All neural pathways have been mapped. Preparing your Enterprise workspace.</p>
                 </div>
                 <div className="p-6 rounded-3xl bg-slate-900/50 border border-card-border flex flex-col gap-4 text-left">
                   <div className="flex items-center justify-between text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase"><span>Status</span><span className="text-emerald-500">99% Complete</span></div>

@@ -117,7 +117,7 @@ export async function fetchDashboardData(): Promise<DashboardData> {
       health: {
         status: statusRes.status === "active" ? "healthy" : "warning",
         uptime: statusRes.system_uptime || "0m",
-        version: "Diamond v2.0"
+        version: "Neural v2.0"
       }
     };
   } catch (error) {
@@ -126,7 +126,7 @@ export async function fetchDashboardData(): Promise<DashboardData> {
       consciousness: await fetchConsciousnessState(),
       reality: await fetchRealityStatus(),
       tasks: { pending_count: 3, completed_today: 14, active_chains: 5 },
-      health: { status: "healthy", uptime: "14d 6h 22m", version: "Diamond v2.0" }
+      health: { status: "healthy", uptime: "14d 6h 22m", version: "Neural v2.0" }
     };
   }
 }
@@ -150,7 +150,7 @@ export async function fetchTasks(): Promise<Task[]> {
     }));
   } catch (error) {
     return [
-      { id: "EMAIL_123", type: "email", from: "investor@example.com", priority: "high", status: "pending", created: new Date().toISOString(), subject: "Investment Opportunity", content: "Discussing Diamond Tier rollout.", suggested_actions: ["Draft reply"] }
+      { id: "EMAIL_123", type: "email", from: "investor@example.com", priority: "high", status: "pending", created: new Date().toISOString(), subject: "Investment Opportunity", content: "Discussing Neural Network rollout.", suggested_actions: ["Draft reply"] }
     ] as Task[];
   }
 }

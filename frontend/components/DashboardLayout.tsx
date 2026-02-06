@@ -189,7 +189,7 @@ export default function SidebarLayout({
                   {user?.email?.split('@')[0] || "Neural Entity"}
                 </p>
                 <p className="text-[10px] font-black text-primary uppercase tracking-tighter">
-                  {user ? "Verified Agent" : "Diamond Tier Access"}
+                  {user ? "Verified Agent" : "Premium Node Access"}
                 </p>
               </div>
               <button 
