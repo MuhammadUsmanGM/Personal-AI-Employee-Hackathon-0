@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { DashboardData } from "@/lib/types";
-import { fetchDashboardData } from "@/lib/api";
+import { fetchDashboardData, fetchOnboardingStatus } from "@/lib/api";
 import { supabase } from "@/lib/supabase";
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
@@ -56,14 +56,25 @@ export default function SidebarLayout({
   ];
 
   useEffect(() => {
-    const checkUser = async () => {
+    const checkUserAndOnboarding = async () => {
       const { data: { session } } = await supabase.auth.getSession();
+      
       if (!session && pathname !== "/auth") {
         router.push("/auth");
+        return;
       }
+      
       setUser(session?.user ?? null);
+
+      if (session?.user && pathname !== "/onboard" && pathname !== "/auth") {
+        const onboarded = await fetchOnboardingStatus(session.user.id);
+        if (!onboarded) {
+          router.push("/onboard");
+        }
+      }
     };
-    checkUser();
+    
+    checkUserAndOnboarding();
 
     const loadData = async () => {
       try {

@@ -925,6 +925,12 @@ try:
 except ImportError as e:
     print(f"Warning: Could not import Users routes: {e}")
 
+try:
+    from .routes.settings import router as settings_router
+    app.include_router(settings_router, prefix="/api", tags=["settings"])
+except ImportError as e:
+    print(f"Warning: Could not import Settings routes: {e}")
+
 # Error handling
 @app.exception_handler(404)
 async def custom_http_exception_handler(request, exc):

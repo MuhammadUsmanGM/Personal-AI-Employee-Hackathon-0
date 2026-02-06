@@ -325,3 +325,32 @@ export async function deleteTeamMember(id: string): Promise<boolean> {
     return false;
   }
 }
+
+export async function saveOnboardingData(data: {
+  user_id: string;
+  anthropic_key?: string;
+  selected_channels: string[];
+}): Promise<boolean> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/settings/onboard`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    return response.ok;
+  } catch (error) {
+    console.error("Onboarding save failed", error);
+    return false;
+  }
+}
+
+export async function fetchOnboardingStatus(userId: string): Promise<boolean> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/settings/status/${userId}`);
+    if (!response.ok) return false;
+    const data = await response.json();
+    return data.onboarded;
+  } catch (error) {
+    return true; // Fallback to true if backend is down to avoid blocking user
+  }
+}
