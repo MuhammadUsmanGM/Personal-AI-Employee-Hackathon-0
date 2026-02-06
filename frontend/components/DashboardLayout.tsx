@@ -19,7 +19,8 @@ import {
   Loader2,
   BarChart3,
   Terminal,
-  ArrowRight
+  ArrowRight,
+  HelpCircle
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { DashboardData } from "@/lib/types";
@@ -97,12 +98,23 @@ export default function SidebarLayout({
           {/* API Terminal Premium Button */}
           <Link 
             href="/api-docs" 
-            className="group relative flex items-center justify-center gap-3 py-3.5 bg-slate-900 border border-card-border hover:border-primary/50 rounded-2xl transition-all overflow-hidden shadow-2xl"
+            className="group relative flex items-center justify-center gap-3 py-3.5 bg-slate-900 border border-card-border hover:border-primary/50 transition-all overflow-hidden shadow-2xl rounded-2xl"
           >
             <div className="absolute inset-0 bg-primary/[0.03] opacity-0 group-hover:opacity-100 transition-opacity" />
             <Terminal size={16} className="text-slate-500 group-hover:text-primary transition-colors" />
             <span className="text-[10px] font-black text-slate-400 group-hover:text-slate-200 uppercase tracking-[0.2em]">Developer Hub</span>
             <div className="w-1 h-1 rounded-full bg-primary shadow-[0_0_8px_rgba(6,182,212,0.8)] animate-pulse" />
+          </Link>
+
+          {/* Help Center Premium Button */}
+          <Link 
+            href="/help" 
+            className="group relative flex items-center justify-center gap-3 py-3.5 bg-slate-900 border border-card-border hover:border-emerald-500/50 rounded-2xl transition-all overflow-hidden shadow-2xl"
+          >
+            <div className="absolute inset-0 bg-emerald-500/[0.03] opacity-0 group-hover:opacity-100 transition-opacity" />
+            <HelpCircle size={16} className="text-slate-500 group-hover:text-emerald-500 transition-colors" />
+            <span className="text-[10px] font-black text-slate-400 group-hover:text-slate-200 uppercase tracking-[0.2em]">Help Center</span>
+            <div className="w-1 h-1 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
           </Link>
 
           {/* System Status Panel */}
