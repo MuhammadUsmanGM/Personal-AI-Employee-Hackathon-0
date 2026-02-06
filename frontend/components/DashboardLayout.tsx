@@ -20,7 +20,8 @@ import {
   BarChart3,
   Terminal,
   ArrowRight,
-  HelpCircle
+  HelpCircle,
+  Users
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { DashboardData } from "@/lib/types";
@@ -37,6 +38,7 @@ export default function SidebarLayout({
   const sidebarItems = [
     { icon: <LayoutDashboard size={20} />, label: "Dashboard", href: "/dashboard" },
     { icon: <BarChart3 size={20} />, label: "Analytics", href: "/analytics" },
+    { icon: <Users size={20} />, label: "Team", href: "/users" },
     { icon: <CheckCircle2 size={20} />, label: "Operations", href: "/operations" },
     { icon: <Activity size={20} />, label: "Business", href: "/business" },
     { icon: <MessageSquare size={20} />, label: "Communications", href: "/comms" },
